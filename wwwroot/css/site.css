@@ -1,31 +1,142 @@
+/* ==========================================================================
+   FocusFlow - Global Design System & Variables
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Brand Colors */
+  --primary: #635BFF;
+  --primary-hover: #5046E5;
+  --primary-active: #4338CA;
+  --primary-light: #EEEDFF;
+  --primary-soft: rgba(99, 91, 255, 0.08);
+  --primary-gradient: linear-gradient(135deg, #635BFF 0%, #7E76FF 100%);
+  --accent-purple: #8B5CF6;
+  --accent-glow: rgba(99, 91, 255, 0.25);
+
+  /* Neutrals & Surfaces */
+  --bg-page: #F6F7FB;
+  --bg-subtle: #F1F3F9;
+  --bg-card: #FFFFFF;
+  --border-light: #E7EAEE;
+  --border-subtle: #F0F2F6;
+
+  /* Typography */
+  --text-main: #202438;
+  --text-body: #4A5168;
+  --text-muted: #79819A;
+  --text-light: #9EA5B9;
+  --text-white: #FFFFFF;
+
+  /* Semantic Feedback */
+  --success: #0E7A4A;
+  --success-bg: #D9FBE7;
+  --success-border: #B7F3D0;
+  --warning: #B35C00;
+  --warning-bg: #FFE9CB;
+  --warning-border: #FFD6A4;
+  --danger: #D9383A;
+  --danger-bg: #FEE7E7;
+  --danger-border: #FCA5A5;
+  --info: #0066CC;
+  --info-bg: #E1F0FF;
+  --info-border: #BAE0FF;
+
+  /* Layout Measurements */
+  --sidebar-width: 250px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 72px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-sm: 0 2px 8px -2px rgba(32, 36, 56, 0.05), 0 1px 4px -1px rgba(32, 36, 56, 0.03);
+  --shadow-md: 0 8px 24px -4px rgba(32, 36, 56, 0.06), 0 2px 6px -2px rgba(32, 36, 56, 0.03);
+  --shadow-lg: 0 16px 36px -6px rgba(32, 36, 56, 0.08), 0 6px 12px -3px rgba(32, 36, 56, 0.04);
+  --shadow-glow: 0 8px 25px rgba(99, 91, 255, 0.28);
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset & Typography */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
-  margin-bottom: 60px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-body);
+  background-color: var(--bg-page);
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  color: var(--text-main);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+h1 { font-size: 1.85rem; font-weight: 800; }
+h2 { font-size: 1.45rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+h4 { font-size: 1.0rem; font-weight: 600; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Scrollbar Customization */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #D5DBE5;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A6AFBE;
 }

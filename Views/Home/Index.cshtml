@@ -1,8 +1,312 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@model FocusFlow.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard Overview";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/dashboard.css" asp-append-version="true" />
+}
+
+<!-- Hero Greeting Section -->
+<div class="dashboard-hero">
+    <div>
+        <h1 class="greeting-title">Hello, @Model.UserName! 👋</h1>
+        <p class="greeting-subtitle">Here's your weekly overview and deep focus performance.</p>
+    </div>
+    <div class="hero-actions">
+        <a asp-controller="Tasks" asp-action="Index" class="btn-flow btn-flow-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Add Task</span>
+        </a>
+        <a asp-controller="Focus" asp-action="Index" class="btn-flow btn-flow-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Start Focus Session</span>
+        </a>
+    </div>
 </div>
+
+<!-- KPI Cards (4 metrics matching Equa layout) -->
+<div class="kpi-grid">
+    <!-- Projects -->
+    <div class="flow-card kpi-card flow-card-interactive">
+        <div class="kpi-header">
+            <div class="kpi-icon-container icon-briefcase">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+            </div>
+            <span class="flow-badge badge-status-doing">Active</span>
+        </div>
+        <div>
+            <div class="kpi-value-row">
+                <span class="kpi-number">@Model.ActiveProjects</span>
+                <span class="kpi-unit">projects</span>
+            </div>
+            <div class="kpi-label">In Progress</div>
+        </div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="flow-card kpi-card flow-card-interactive">
+        <div class="kpi-header">
+            <div class="kpi-icon-container icon-check">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <span class="flow-trend-pill positive">+8 today</span>
+        </div>
+        <div>
+            <div class="kpi-value-row">
+                <span class="kpi-number">@Model.CompletedTasks</span>
+                <span class="kpi-unit">tasks</span>
+            </div>
+            <div class="kpi-label">Completed This Sprint</div>
+        </div>
+    </div>
+
+    <!-- Focus Hours -->
+    <div class="flow-card kpi-card flow-card-interactive">
+        <div class="kpi-header">
+            <div class="kpi-icon-container icon-hourglass">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 22h14M5 2h14M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
+                </svg>
+            </div>
+            <span class="flow-trend-pill positive">@Model.GrowthPercentage</span>
+        </div>
+        <div>
+            <div class="kpi-value-row">
+                <span class="kpi-number">@Model.WeeklyFocusHours</span>
+                <span class="kpi-unit">h</span>
+            </div>
+            <div class="kpi-label">Focus Hours Logged</div>
+        </div>
+    </div>
+
+    <!-- Activity Streak Time with Dot Matrix -->
+    <div class="flow-card kpi-card flow-card-interactive">
+        <div class="kpi-header">
+            <div class="kpi-icon-container icon-streak">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
+                </svg>
+            </div>
+            <span class="flow-badge badge-priority-med">🔥 On Fire</span>
+        </div>
+        <div>
+            <div class="kpi-value-row">
+                <span class="kpi-number">@Model.StreakDays</span>
+                <span class="kpi-unit">days</span>
+            </div>
+            <div class="kpi-label">Activity Streak</div>
+            <!-- Matrix dots representation -->
+            <div class="activity-dots-matrix" title="Your 12-day streak record">
+                @for (int i = 0; i < 20; i++)
+                {
+                    <div class="activity-dot @(i < Model.StreakDays ? "active" : "")"></div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Productivity Trends Section (Weekly Focus Chart) -->
+<div class="flow-card trends-card">
+    <div class="flow-card-header">
+        <div class="flow-card-title-group">
+            <h2 class="flow-card-title">Productivity Trends</h2>
+            <span class="flow-card-subtitle">Daily focus distribution across the current week</span>
+        </div>
+        <div class="pill-tab-group">
+            <button type="button" class="pill-tab active">This Week</button>
+            <button type="button" class="pill-tab">Last Week</button>
+        </div>
+    </div>
+
+    <div class="trends-layout">
+        <!-- Summary Box -->
+        <div class="trends-summary-box">
+            <div>
+                <span class="trends-big-number">@Model.WeeklyFocusHours<small style="font-size: 1.4rem;">h</small></span>
+                <div class="trends-subtitle">Logged this week</div>
+            </div>
+            <div class="flow-trend-pill positive" style="align-self: flex-start;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+                <span>@Model.GrowthPercentage</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">
+                You hit your deepest peak on Wednesday with 5.8 hours of uninterrupted flow.
+            </p>
+        </div>
+
+        <!-- Pure CSS Interactive Bar Chart -->
+        <div class="chart-container">
+            <div class="chart-bars-wrap">
+                @foreach (var bar in Model.WeeklyTrend)
+                {
+                    <div class="bar-column">
+                        <div class="bar-tooltip">@bar.DayName: @bar.Hours h</div>
+                        <div class="bar-pill @(bar.IsPeak ? "peak-bar" : "")" style="height: @(bar.HeightPercent)%;"></div>
+                        <span class="bar-label">@bar.DayShort</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Row: Mini Time Tracker + Today's Plan -->
+<div class="dashboard-split-grid">
+    <!-- Live Mini Time Tracker Card -->
+    <div class="mini-tracker-widget">
+        <div>
+            <div class="mini-tracker-header">
+                <span class="tracker-tag">Current Session</span>
+                <span style="font-size: 0.8rem; color: #94A3B8;">Pomodoro 25m</span>
+            </div>
+            <div class="mini-timer-display" id="dashTimerDisplay">24:18</div>
+            <div class="tracker-task-name">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Deep Work: SaaS Dashboard UI</span>
+            </div>
+        </div>
+        <div class="tracker-controls">
+            <button type="button" class="btn-tracker-play" id="dashPlayBtn" title="Play / Pause Session">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+            </button>
+            <button type="button" class="btn-tracker-reset" id="dashResetBtn" title="Reset Session">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="1 4 1 10 7 10"></polyline>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+            </button>
+            <a asp-controller="Focus" asp-action="Index" class="btn-flow btn-flow-ghost btn-flow-sm" style="color: #A5B4FC; margin-left: auto;">
+                Expand Room &rarr;
+            </a>
+        </div>
+    </div>
+
+    <!-- Today's Plan -->
+    <div class="flow-card">
+        <div class="flow-card-header">
+            <div class="flow-card-title-group">
+                <h3 class="flow-card-title">Today's Focus Plan</h3>
+                <span class="flow-card-subtitle">Keep high-priority goals top of mind</span>
+            </div>
+            <a asp-controller="Tasks" asp-action="Index" class="btn-flow btn-flow-ghost btn-flow-sm">
+                View All
+            </a>
+        </div>
+
+        <div class="today-tasks-list">
+            @foreach (var task in Model.TodayPlan)
+            {
+                <div class="today-task-item @(task.IsCompleted ? "completed" : "")" id="task-row-@task.Id">
+                    <label class="flow-checkbox-wrapper">
+                        <input type="checkbox" class="flow-checkbox-input task-toggle-check" @(task.IsCompleted ? "checked" : "") data-id="@task.Id" />
+                        <span class="flow-checkbox-mark"></span>
+                    </label>
+                    <div class="task-info">
+                        <div class="task-title-text">@task.Title</div>
+                        <div class="task-meta-sub">
+                            <span>@task.Category</span>
+                            <span>•</span>
+                            <span>@task.DueDate</span>
+                        </div>
+                    </div>
+                    @if (task.Priority == "High")
+                    {
+                        <span class="flow-badge badge-priority-high">High</span>
+                    }
+                    else if (task.Priority == "Medium")
+                    {
+                        <span class="flow-badge badge-priority-med">Med</span>
+                    }
+                    else
+                    {
+                        <span class="flow-badge badge-priority-low">Low</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Interactive task completion checkbox toggle
+        document.querySelectorAll('.task-toggle-check').forEach(input => {
+            input.addEventListener('change', function () {
+                const row = document.getElementById('task-row-' + this.dataset.id);
+                if (row) {
+                    if (this.checked) {
+                        row.classList.add('completed');
+                    } else {
+                        row.classList.remove('completed');
+                    }
+                }
+            });
+        });
+
+        // Mini timer toggle in dashboard
+        let isRunning = false;
+        let seconds = 24 * 60 + 18;
+        let timerInterval = null;
+        const display = document.getElementById('dashTimerDisplay');
+        const playBtn = document.getElementById('dashPlayBtn');
+        const resetBtn = document.getElementById('dashResetBtn');
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60).toString().padStart(2, '0');
+            const s = (sec % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        if (playBtn) {
+            playBtn.addEventListener('click', function () {
+                isRunning = !isRunning;
+                if (isRunning) {
+                    playBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+                    timerInterval = setInterval(() => {
+                        if (seconds > 0) {
+                            seconds--;
+                            display.textContent = formatTime(seconds);
+                        } else {
+                            clearInterval(timerInterval);
+                            isRunning = false;
+                        }
+                    }, 1000);
+                } else {
+                    playBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                    clearInterval(timerInterval);
+                }
+            });
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function () {
+                clearInterval(timerInterval);
+                isRunning = false;
+                seconds = 25 * 60;
+                display.textContent = "25:00";
+                if (playBtn) {
+                    playBtn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                }
+            });
+        }
+    </script>
+}

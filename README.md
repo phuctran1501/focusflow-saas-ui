@@ -42,21 +42,13 @@ _Comprehensive SaaS table layout featuring status metric chips, priority badges,
 
 ---
 
-### 04. Insights (`/Insights`)
-
-_Productivity analytics dashboard featuring a weekly score indicator, smooth spline wave SVG chart, 12-day streak card with community percentiles, radial donut completion ring, and AI productivity highlights._
-![Productivity Insights](wwwroot/images/insights.png)
-
----
-
 ## 🚀 Key Features
 
 | Screen         | Route       | Key UI Components                                                                                                                                                                                                                                    |
 | -------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Dashboard**  | `/`         | Greeting banner, 4 KPI metric cards (Projects, Tasks, Hours, Dot streak matrix), weekly focus bar chart with peak indicator & tooltips, quick time tracker widget, today's plan.                                                                     |
-| **Focus Room** | `/Focus`    | Mode tabs (`Focus 25m`, `Short Break 5m`, `Long Break 15m`), circular SVG radial timer, start/pause/reset/skip controls, checkable goal queue, Day Structures (_Deep Work_, _Study Mode_, _Power Day_), and native Web Audio rain ambient generator. |
-| **My Tasks**   | `/Tasks`    | Top search bar, filter tabs (`All`, `To do`, `Doing`, `Overdue`, `Completed`), priority filter, 6 metric summary chips, clean SaaS table with avatars and subtask counters, and interactive "+ Create Task" modal.                                   |
-| **Insights**   | `/Insights` | Weekly productivity score (84.2%), smooth SVG wave spline chart with gradient fill, 12-day streak card with avatar stack, donut chart with 85% completion, and 3 highlight cards (_Peak Focus_, _Consistency King_, _Rest Insight_).                 |
+| **Dashboard**  | `/`         | Greeting banner, 4 KPI metric cards (Projects, Tasks, Hours, Dot streak matrix), weekly focus bar chart, quick 25m time tracker widget, and today's priority plan.                                                                                    |
+| **Focus Room** | `/focus`    | Mode tabs (`Focus 25m`, `Short Break 5m`, `Long Break 15m`), circular SVG radial timer, start/pause/reset/skip controls, checkable goal queue, draggable session tasks, and YouTube ambient soundscape engine (Rain, Waves, Forest, Cafe).           |
+| **My Tasks**   | `/tasks`    | Top search bar, filter tabs (`All`, `To do`, `Doing`, `Completed`), priority filter, metric summary chips, clean data table with avatars, more options dropdown menu, and interactive "+ Create Task" modal.                                       |
 
 ---
 

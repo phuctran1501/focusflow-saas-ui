@@ -63,14 +63,6 @@ const { activePage = 'dashboard' } = Astro.props;
             <span>My Tasks</span>
           </a>
         </li>
-        <li class="sidebar-nav-item">
-          <a href="/insights" class={`sidebar-nav-link ${activePage === 'insights' ? 'active' : ''}`}>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 20V10M12 20V4M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Insights</span>
-          </a>
-        </li>
       </ul>
     </div>
 
@@ -86,15 +78,6 @@ const { activePage = 'dashboard' } = Astro.props;
               <path d="M16 12H12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
             <span>Time Tracker</span>
-          </a>
-        </li>
-        <li class="sidebar-nav-item">
-          <a href="/insights" class="sidebar-nav-link">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 3V21H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M7 14L12 9L16 13L21 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span>Analytics</span>
           </a>
         </li>
       </ul>

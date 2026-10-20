@@ -1,0 +1,11 @@
+## .NET Core
+bin/
+obj/
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+.vs/
+*.suo
+*.userprefs
+appsettings.Development.json

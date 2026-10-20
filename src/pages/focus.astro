@@ -436,13 +436,13 @@ import Layout from '../layouts/Layout.astro';
   });
 
   skipBtn?.addEventListener('click', () => {
-    const isFocus = remainingSeconds > 5 * 60;
-    if (isFocus) {
-      const shortBreakBtn = document.querySelector('.timer-mode-btn[data-mode="SHORT BREAK"]') as HTMLElement | null;
-      shortBreakBtn?.click();
-    } else {
-      const focusBtn = document.querySelector('.timer-mode-btn[data-mode="FOCUS"]') as HTMLElement | null;
-      focusBtn?.click();
+    // Fast forward to 0 seconds (complete countdown) per user request
+    clearInterval(timerInterval);
+    timerRunning = false;
+    remainingSeconds = 0;
+    updateDisplay();
+    if (playBtn) {
+      playBtn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
     }
   });
 

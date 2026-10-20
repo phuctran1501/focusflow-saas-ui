@@ -150,13 +150,13 @@ import Layout from '../layouts/Layout.astro';
       <form id="createTaskForm">
         <div style="margin-bottom: 16px;">
           <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Task Title</label>
-          <input type="text" id="modalTaskTitle" required placeholder="e.g. Design Homepage Wireframes" class="form-input" style="width: 100%;" />
+          <input type="text" id="modalTaskTitle" required placeholder="e.g. Design Homepage Wireframes" class="flow-input" style="width: 100%;" />
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
           <div>
             <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Priority</label>
-            <select id="modalTaskPriority" class="form-input" style="width: 100%;">
+            <select id="modalTaskPriority" class="flow-select" style="width: 100%;">
               <option value="Medium">Medium</option>
               <option value="High">High</option>
               <option value="Low">Low</option>
@@ -164,7 +164,7 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <div>
             <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Status</label>
-            <select id="modalTaskStatus" class="form-input" style="width: 100%;">
+            <select id="modalTaskStatus" class="flow-select" style="width: 100%;">
               <option value="To do">To do</option>
               <option value="Doing">Doing</option>
               <option value="Completed">Completed</option>
@@ -174,7 +174,7 @@ import Layout from '../layouts/Layout.astro';
 
         <div style="margin-bottom: 24px;">
           <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Due Date</label>
-          <input type="date" id="modalTaskDueDate" class="form-input" style="width: 100%;" />
+          <input type="date" id="modalTaskDueDate" class="flow-input" style="width: 100%;" />
         </div>
 
         <div style="display: flex; justify-content: flex-end; gap: 10px;">

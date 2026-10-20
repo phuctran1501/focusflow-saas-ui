@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "FocusFlow SaaS UI - Productivity and Focus tracking dashboard",
   "scripts": {
-    "dev": "astro dev --port 4321",
+    "dev": "astro dev --port 4321 --force",
     "build": "astro build",
     "preview": "astro preview",
     "scss": "sass wwwroot/scss:wwwroot/css --no-source-map --style=expanded",

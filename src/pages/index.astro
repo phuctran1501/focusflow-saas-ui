@@ -243,9 +243,9 @@ import Layout from '../layouts/Layout.astro';
           </svg>
           <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px;">No tasks added yet</div>
           <div style="font-size: 0.82rem; margin-bottom: 16px;">Add a task below to prioritize your focus for today.</div>
-          <div style="display: flex; gap: 8px; max-width: 380px; margin: 0 auto;">
-            <input type="text" id="quickTaskInput" class="form-input" placeholder="Type a task and press Enter..." style="font-size: 0.85rem;" />
-            <button type="button" id="quickTaskAddBtn" class="btn-flow btn-flow-primary btn-flow-sm">Add</button>
+          <div style="display: flex; align-items: center; gap: 10px; max-width: 440px; width: 100%; margin: 0 auto;">
+            <input type="text" id="quickTaskInput" class="flow-input" placeholder="Type a task and press Enter..." style="flex: 1; min-width: 0; font-size: 0.88rem; padding: 10px 14px;" />
+            <button type="button" id="quickTaskAddBtn" class="btn-flow btn-flow-primary btn-flow-sm" style="flex-shrink: 0; white-space: nowrap; height: 40px; padding: 0 18px; font-weight: 600;">Add</button>
           </div>
         </div>
       </div>

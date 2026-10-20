@@ -1,0 +1,63 @@
+// ==========================================================================
+// FocusFlow - SCSS Root Bundle (site.scss)
+// ==========================================================================
+
+@use "base/variables" as *;
+@use "base/mixins" as *;
+@use "base/reset" as *;
+
+// Global site-wide token exposure
+:root {
+  --primary: #{$primary};
+  --primary-hover: #{$primary-hover};
+  --primary-active: #{$primary-active};
+  --primary-light: #{$primary-light};
+  --primary-soft: #{$primary-soft};
+  --primary-gradient: #{$primary-gradient};
+  --accent-purple: #{$accent-purple};
+  --accent-glow: #{$accent-glow};
+
+  --bg-page: #{$bg-page};
+  --bg-subtle: #{$bg-subtle};
+  --bg-card: #{$bg-card};
+  --border-light: #{$border-light};
+  --border-subtle: #{$border-subtle};
+
+  --text-main: #{$text-main};
+  --text-body: #{$text-body};
+  --text-muted: #{$text-muted};
+  --text-light: #{$text-light};
+  --text-white: #{$text-white};
+
+  --success: #{$success};
+  --success-bg: #{$success-bg};
+  --success-border: #{$success-border};
+  --warning: #{$warning};
+  --warning-bg: #{$warning-bg};
+  --warning-border: #{$warning-border};
+  --danger: #{$danger};
+  --danger-bg: #{$danger-bg};
+  --danger-border: #{$danger-border};
+  --info: #{$info};
+  --info-bg: #{$info-bg};
+  --info-border: #{$info-border};
+
+  --sidebar-width: #{$sidebar-width};
+  --sidebar-collapsed-width: #{$sidebar-collapsed-width};
+  --header-height: #{$header-height};
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
+  --radius-full: #{$radius-full};
+
+  --shadow-xs: #{$shadow-xs};
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+  --shadow-glow: #{$shadow-glow};
+
+  --transition-fast: #{$transition-fast};
+  --transition-normal: #{$transition-normal};
+  --transition-smooth: #{$transition-smooth};
+}

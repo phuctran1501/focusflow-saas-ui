@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <Target Name="CompileScss" BeforeTargets="BeforeBuild">
+    <Exec Command="sass wwwroot/scss:wwwroot/css --no-source-map --style=expanded" ContinueOnError="true" />
+  </Target>
+
 </Project>

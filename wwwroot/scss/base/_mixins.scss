@@ -1,0 +1,47 @@
+// ==========================================================================
+// FocusFlow - SCSS Mixins & Functions
+// ==========================================================================
+
+@use "variables" as *;
+
+// Flexbox Center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex Between
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Glassmorphism Surface
+@mixin glass-surface($bg-opacity: 0.06, $blur: 16px, $border-opacity: 0.1) {
+  background: rgba(255, 255, 255, $bg-opacity);
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  border: 1px solid rgba(255, 255, 255, $border-opacity);
+}
+
+// Responsive Breakpoints
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (max-width: 480px) { @content; }
+  } @else if $breakpoint == 'md' {
+    @media (max-width: 768px) { @content; }
+  } @else if $breakpoint == 'lg' {
+    @media (max-width: 1024px) { @content; }
+  } @else if $breakpoint == 'xl' {
+    @media (max-width: 1200px) { @content; }
+  }
+}
+
+// Truncate Single Line
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,471 @@
+// ==========================================================================
+// FocusFlow - SCSS Layout (App Shell, Sidebar, Header, Responsive)
+// ==========================================================================
+
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+// Sidebar
+.app-sidebar {
+  width: $sidebar-width;
+  min-width: $sidebar-width;
+  background: $bg-card;
+  border-right: 1px solid $border-light;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform $transition-normal, width $transition-normal;
+
+  .sidebar-header {
+    height: $header-height;
+    padding: 0 24px;
+    @include flex-between;
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+
+      .brand-icon-box {
+        flex-shrink: 0;
+        @include flex-center;
+      }
+
+      .brand-name {
+        font-family: $font-heading;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: $text-main;
+        letter-spacing: -0.03em;
+      }
+
+      .brand-badge {
+        font-size: 0.65rem;
+        font-weight: 700;
+        background: $primary-light;
+        color: $primary;
+        padding: 2px 7px;
+        border-radius: $radius-full;
+        margin-left: 6px;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .sidebar-content {
+    flex: 1;
+    padding: 16px 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .nav-group-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: $text-light;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0 14px 8px;
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      .sidebar-nav-item {
+        width: 100%;
+
+        .sidebar-nav-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 14px;
+          border-radius: $radius-md;
+          color: $text-muted;
+          font-size: 0.94rem;
+          font-weight: 500;
+          transition: all $transition-fast;
+          position: relative;
+
+          svg {
+            width: 20px;
+            height: 20px;
+            stroke: $text-muted;
+            stroke-width: 2;
+            transition: stroke $transition-fast, transform $transition-fast;
+          }
+
+          &:hover {
+            color: $text-main;
+            background-color: $bg-subtle;
+
+            svg {
+              stroke: $primary;
+              transform: scale(1.05);
+            }
+          }
+
+          &.active {
+            color: $text-main;
+            background-color: $bg-subtle;
+            font-weight: 700;
+
+            svg {
+              stroke: $primary;
+            }
+
+            &::before {
+              content: "";
+              position: absolute;
+              left: -14px;
+              top: 6px;
+              bottom: 6px;
+              width: 4px;
+              background: $primary;
+              border-radius: 0 4px 4px 0;
+            }
+          }
+
+          .nav-badge-pill {
+            margin-left: auto;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: $radius-full;
+            background: $primary-light;
+            color: $primary;
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid $border-light;
+
+    .user-profile-widget {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: $radius-md;
+      transition: background $transition-fast;
+
+      &:hover {
+        background: $bg-subtle;
+      }
+
+      .user-avatar-wrapper {
+        position: relative;
+
+        .user-avatar {
+          width: 38px;
+          height: 38px;
+          border-radius: $radius-full;
+          background: linear-gradient(135deg, #FF6B8B, #FF8E53);
+          @include flex-center;
+          color: #fff;
+          font-weight: 700;
+          font-size: 0.88rem;
+          border: 2px solid #fff;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .user-status-online {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #10B981;
+          border: 2px solid #fff;
+        }
+      }
+
+      .user-meta {
+        flex: 1;
+        min-width: 0;
+
+        .user-name {
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: $text-main;
+          @include text-truncate;
+        }
+
+        .user-role {
+          font-size: 0.75rem;
+          color: $text-muted;
+        }
+      }
+    }
+  }
+}
+
+// Main Viewport
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: $bg-page;
+}
+
+// Top Header
+.top-header {
+  height: $header-height;
+  padding: 0 32px;
+  @include flex-between;
+  gap: 20px;
+  background-color: $bg-page;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  transition: background $transition-fast;
+
+  &.header-scrolled {
+    background-color: rgba(246, 247, 251, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid $border-light;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    max-width: 460px;
+
+    .menu-toggle-btn {
+      display: none;
+      width: 38px;
+      height: 38px;
+      border-radius: $radius-sm;
+      background: $bg-card;
+      border: 1px solid $border-light;
+      @include flex-center;
+      color: $text-main;
+    }
+
+    .header-search {
+      position: relative;
+      width: 100%;
+
+      .search-input {
+        width: 100%;
+        height: 42px;
+        padding: 0 42px 0 40px;
+        background: $bg-card;
+        border: 1px solid $border-light;
+        border-radius: $radius-full;
+        font-size: 0.88rem;
+        color: $text-main;
+        transition: all $transition-fast;
+        box-shadow: $shadow-xs;
+
+        &:focus {
+          border-color: $primary;
+          box-shadow: 0 0 0 3px $primary-soft;
+          background: #fff;
+        }
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 17px;
+        height: 17px;
+        stroke: $text-light;
+        pointer-events: none;
+      }
+
+      .search-shortcut {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: $text-light;
+        background: $bg-subtle;
+        border: 1px solid $border-light;
+        border-radius: 6px;
+        padding: 2px 6px;
+        pointer-events: none;
+      }
+    }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .header-date-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: $bg-card;
+      border: 1px solid $border-light;
+      padding: 6px 14px;
+      border-radius: $radius-full;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: $text-muted;
+
+      svg {
+        width: 15px;
+        height: 15px;
+        stroke: $primary;
+      }
+    }
+
+    .header-action-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: $radius-full;
+      background: $bg-card;
+      border: 1px solid $border-light;
+      @include flex-center;
+      color: $text-muted;
+      position: relative;
+      transition: all $transition-fast;
+
+      &:hover {
+        background: $bg-subtle;
+        color: $text-main;
+        border-color: #D3D8E2;
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+      }
+
+      .notif-badge-dot {
+        position: absolute;
+        top: 9px;
+        right: 10px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #EF4444;
+        border: 2px solid #fff;
+      }
+    }
+  }
+}
+
+// Content Body
+.content-body {
+  flex: 1;
+  padding: 8px 32px 40px;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+// Mobile Backdrop
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+}
+
+// Responsive Media Queries
+@include respond-to('lg') {
+  .app-sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+  .content-body {
+    padding: 8px 20px 32px;
+  }
+  .top-header {
+    padding: 0 20px;
+  }
+}
+
+@include respond-to('md') {
+  .menu-toggle-btn {
+    display: flex !important;
+  }
+
+  .app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: $shadow-lg;
+
+    &.sidebar-open {
+      transform: translateX(0);
+    }
+  }
+
+  .sidebar-backdrop.active {
+    display: block;
+  }
+
+  .header-date-pill {
+    display: none;
+  }
+
+  .content-body {
+    padding: 12px 16px 36px;
+  }
+
+  .top-header {
+    padding: 0 16px;
+  }
+
+  .search-shortcut {
+    display: none;
+  }
+}
+
+@include respond-to('sm') {
+  .header-left {
+    max-width: 100%;
+  }
+
+  .header-search {
+    max-width: 160px;
+
+    .search-input {
+      height: 36px;
+      font-size: 0.8rem;
+      padding-left: 32px;
+    }
+
+    .search-icon {
+      left: 10px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}

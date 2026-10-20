@@ -1,19 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <defs>
-    <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#635BFF"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
-    </linearGradient>
-    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#635BFF" flood-opacity="0.35"/>
-    </filter>
-  </defs>
-  <rect width="100" height="100" rx="26" fill="url(#flowGrad)" filter="url(#subtleShadow)"/>
-  <g fill="#FFFFFF">
-    <circle cx="34" cy="34" r="9"/>
-    <circle cx="66" cy="34" r="9" opacity="0.85"/>
-    <circle cx="34" cy="66" r="9" opacity="0.85"/>
-    <circle cx="66" cy="66" r="9"/>
-    <path d="M34 43v14 M43 34h14 M66 43v14 M43 66h14" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Smooth curved connecting bridges -->
+    <path d="M 28 28 Q 50 42 72 72" stroke="#1E2238" stroke-width="15"/>
+    <path d="M 72 28 Q 50 42 28 72" stroke="#1E2238" stroke-width="15"/>
+    <path d="M 28 28 Q 42 50 50 50" stroke="#FF6B00" stroke-width="15"/>
   </g>
+  <!-- 4 Nodes: Orange top-left, dark for the rest -->
+  <circle cx="28" cy="28" r="13" fill="#FF6B00"/>
+  <circle cx="72" cy="28" r="13" fill="#1E2238"/>
+  <circle cx="28" cy="72" r="13" fill="#1E2238"/>
+  <circle cx="72" cy="72" r="13" fill="#1E2238"/>
 </svg>

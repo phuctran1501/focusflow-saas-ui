@@ -1,0 +1,12 @@
+{
+  "name": "focusflow-saas-ui",
+  "version": "1.0.0",
+  "description": "FocusFlow SaaS UI - Productivity and Focus tracking dashboard",
+  "scripts": {
+    "scss": "sass wwwroot/scss:wwwroot/css --no-source-map --style=expanded",
+    "scss:watch": "sass wwwroot/scss:wwwroot/css --watch --style=expanded"
+  },
+  "keywords": ["aspnetcore", "scss", "sass", "saas-dashboard"],
+  "author": "FocusFlow",
+  "license": "MIT"
+}

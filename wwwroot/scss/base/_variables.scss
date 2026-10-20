@@ -1,0 +1,71 @@
+// ==========================================================================
+// FocusFlow - SCSS Design Tokens & Variables
+// ==========================================================================
+
+// 1. Color Palette
+$primary: #635BFF;
+$primary-hover: #5046E5;
+$primary-active: #4338CA;
+$primary-light: #EEEDFF;
+$primary-soft: rgba(99, 91, 255, 0.08);
+$primary-gradient: linear-gradient(135deg, #635BFF 0%, #7E76FF 100%);
+$accent-purple: #8B5CF6;
+$accent-glow: rgba(99, 91, 255, 0.25);
+
+// 2. Neutrals & Surfaces
+$bg-page: #F6F7FB;
+$bg-subtle: #F1F3F9;
+$bg-card: #FFFFFF;
+$border-light: #E7EAEE;
+$border-subtle: #F0F2F6;
+
+// 3. Typography
+$text-main: #202438;
+$text-body: #4A5168;
+$text-muted: #79819A;
+$text-light: #9EA5B9;
+$text-white: #FFFFFF;
+
+$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$font-heading: 'Plus Jakarta Sans', 'Inter', sans-serif;
+
+// 4. Semantics
+$success: #0E7A4A;
+$success-bg: #D9FBE7;
+$success-border: #B7F3D0;
+
+$warning: #B35C00;
+$warning-bg: #FFE9CB;
+$warning-border: #FFD6A4;
+
+$danger: #D9383A;
+$danger-bg: #FEE7E7;
+$danger-border: #FCA5A5;
+
+$info: #0066CC;
+$info-bg: #E1F0FF;
+$info-border: #BAE0FF;
+
+// 5. Layout Dimensions
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 80px;
+$header-height: 72px;
+
+// 6. Border Radii
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-full: 9999px;
+
+// 7. Elevation Shadows
+$shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.04);
+$shadow-sm: 0 2px 8px -2px rgba(32, 36, 56, 0.05), 0 1px 4px -1px rgba(32, 36, 56, 0.03);
+$shadow-md: 0 8px 24px -4px rgba(32, 36, 56, 0.06), 0 2px 6px -2px rgba(32, 36, 56, 0.03);
+$shadow-lg: 0 16px 36px -6px rgba(32, 36, 56, 0.08), 0 6px 12px -3px rgba(32, 36, 56, 0.04);
+$shadow-glow: 0 8px 25px rgba(99, 91, 255, 0.28);
+
+// 8. Animation Transitions
+$transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);

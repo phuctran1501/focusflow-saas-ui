@@ -1,0 +1,92 @@
+// ==========================================================================
+// FocusFlow - SCSS Badges & Trend Indicators
+// ==========================================================================
+
+@use "../base/variables" as *;
+
+.flow-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1;
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+// Priority Badges
+.badge-priority {
+  &-high {
+    background: #FFF1F0;
+    color: #E03137;
+    border: 1px solid #FFCCC7;
+  }
+
+  &-med {
+    background: $warning-bg;
+    color: $warning;
+    border: 1px solid $warning-border;
+  }
+
+  &-low {
+    background: #EFF6FF;
+    color: #2563EB;
+    border: 1px solid #BFDBFE;
+  }
+}
+
+// Status Badges
+.badge-status {
+  &-completed {
+    background: $success-bg;
+    color: $success;
+    border: 1px solid $success-border;
+  }
+
+  &-doing {
+    background: $info-bg;
+    color: $info;
+    border: 1px solid $info-border;
+  }
+
+  &-todo {
+    background: #F3F4F6;
+    color: #4B5563;
+    border: 1px solid #E5E7EB;
+  }
+
+  &-overdue {
+    background: $danger-bg;
+    color: $danger;
+    border: 1px solid $danger-border;
+  }
+}
+
+// Trend Indicators
+.flow-trend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: $radius-full;
+  font-size: 0.74rem;
+  font-weight: 700;
+
+  &.positive {
+    background: $success-bg;
+    color: $success;
+  }
+
+  &.negative {
+    background: $danger-bg;
+    color: $danger;
+  }
+}

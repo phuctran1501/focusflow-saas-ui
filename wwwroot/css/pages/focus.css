@@ -1,19 +1,13 @@
-/* ==========================================================================
-   FocusFlow - Focus Room (FocusNow Inspired Atmosphere)
-   ========================================================================== */
-
 .focus-room-container {
-  min-height: calc(100vh - var(--header-height) - 40px);
+  min-height: calc(100vh - 72px - 40px);
   background: radial-gradient(circle at 20% 20%, #301E67 0%, #150E38 50%, #0D0826 100%);
-  border-radius: var(--radius-xl);
+  border-radius: 20px;
   padding: 36px;
   color: #fff;
   box-shadow: 0 20px 50px rgba(13, 8, 38, 0.4);
   position: relative;
   overflow: hidden;
 }
-
-/* Subtle glowing background orbs */
 .focus-room-container::before {
   content: "";
   position: absolute;
@@ -36,64 +30,57 @@
   flex-wrap: wrap;
   gap: 16px;
 }
-
-.focus-session-meta {
+.focus-room-topbar .focus-session-meta {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
-.focus-session-title {
+.focus-room-topbar .focus-session-meta .focus-session-title {
   font-size: 1.15rem;
   font-weight: 700;
   color: #fff;
 }
-
-.focus-session-badge {
+.focus-room-topbar .focus-session-meta .focus-session-badge {
   background: rgba(99, 91, 255, 0.25);
   color: #C7D2FE;
   border: 1px solid rgba(99, 91, 255, 0.4);
   padding: 4px 12px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   font-size: 0.78rem;
   font-weight: 600;
 }
-
-.focus-room-actions {
+.focus-room-topbar .focus-room-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
-.focus-glass-btn {
+.focus-room-topbar .focus-room-actions .focus-glass-btn {
   background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #E2E8F0;
   padding: 8px 16px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   font-size: 0.84rem;
   font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: all var(--transition-fast);
-  backdrop-filter: blur(8px);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.focus-glass-btn:hover {
+.focus-room-topbar .focus-room-actions .focus-glass-btn:hover {
   background: rgba(255, 255, 255, 0.14);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.25);
 }
-
-.focus-glass-btn.active {
+.focus-room-topbar .focus-room-actions .focus-glass-btn.active {
   background: #635BFF;
   border-color: #7E76FF;
   color: #fff;
   box-shadow: 0 4px 16px rgba(99, 91, 255, 0.4);
 }
 
-/* 3-Column Focus Room Layout */
 .focus-grid {
   display: grid;
   grid-template-columns: 1.1fr 1fr 1fr;
@@ -101,19 +88,26 @@
   align-items: stretch;
 }
 
-/* Glass Card */
 .glass-panel {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-lg);
+  border-radius: 16px;
   padding: 28px;
   display: flex;
   flex-direction: column;
 }
+.glass-panel .glass-panel-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-/* Column 1: Main Timer */
 .timer-hero-panel {
   display: flex;
   flex-direction: column;
@@ -122,38 +116,31 @@
   text-align: center;
   padding: 36px 24px;
 }
-
-/* Timer Mode Tabs */
-.timer-mode-pills {
+.timer-hero-panel .timer-mode-pills {
   display: inline-flex;
   background: rgba(0, 0, 0, 0.25);
   padding: 4px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   margin-bottom: 36px;
 }
-
-.timer-mode-btn {
+.timer-hero-panel .timer-mode-pills .timer-mode-btn {
   padding: 8px 18px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   font-size: 0.84rem;
   font-weight: 600;
   color: #94A3B8;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.timer-mode-btn:hover {
+.timer-hero-panel .timer-mode-pills .timer-mode-btn:hover {
   color: #fff;
 }
-
-.timer-mode-btn.active {
+.timer-hero-panel .timer-mode-pills .timer-mode-btn.active {
   background: #635BFF;
   color: #fff;
   box-shadow: 0 2px 10px rgba(99, 91, 255, 0.4);
 }
-
-/* Big Circular / Radial Countdown */
-.timer-dial-wrapper {
+.timer-hero-panel .timer-dial-wrapper {
   position: relative;
   width: 260px;
   height: 260px;
@@ -162,20 +149,17 @@
   justify-content: center;
   margin-bottom: 36px;
 }
-
-.timer-svg-ring {
+.timer-hero-panel .timer-dial-wrapper .timer-svg-ring {
   transform: rotate(-90deg);
   width: 100%;
   height: 100%;
 }
-
-.ring-bg {
+.timer-hero-panel .timer-dial-wrapper .timer-svg-ring .ring-bg {
   fill: none;
   stroke: rgba(255, 255, 255, 0.08);
   stroke-width: 8;
 }
-
-.ring-progress {
+.timer-hero-panel .timer-dial-wrapper .timer-svg-ring .ring-progress {
   fill: none;
   stroke: #635BFF;
   stroke-width: 8;
@@ -184,40 +168,34 @@
   stroke-dashoffset: 0;
   transition: stroke-dashoffset 1s linear;
 }
-
-.timer-center-text {
+.timer-hero-panel .timer-dial-wrapper .timer-center-text {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-
-.timer-digits {
+.timer-hero-panel .timer-dial-wrapper .timer-center-text .timer-digits {
   font-size: 4.2rem;
   font-weight: 800;
-  font-family: 'Plus Jakarta Sans', monospace;
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif, monospace;
   letter-spacing: -0.03em;
   color: #FFFFFF;
   text-shadow: 0 4px 20px rgba(99, 91, 255, 0.4);
 }
-
-.timer-status-hint {
+.timer-hero-panel .timer-dial-wrapper .timer-center-text .timer-status-hint {
   font-size: 0.84rem;
   color: #94A3B8;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-top: 4px;
 }
-
-/* Big Control Buttons */
-.timer-control-row {
+.timer-hero-panel .timer-control-row {
   display: flex;
   align-items: center;
   gap: 20px;
 }
-
-.btn-focus-main {
+.timer-hero-panel .timer-control-row .btn-focus-main {
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -228,18 +206,16 @@
   align-items: center;
   justify-content: center;
   font-size: 1.4rem;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
 }
-
-.btn-focus-main:hover {
+.timer-hero-panel .timer-control-row .btn-focus-main:hover {
   background: #635BFF;
   border-color: #7E76FF;
   transform: scale(1.08);
   box-shadow: 0 6px 24px rgba(99, 91, 255, 0.5);
 }
-
-.btn-focus-sub {
+.timer-hero-panel .timer-control-row .btn-focus-sub {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -249,23 +225,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.btn-focus-sub:hover {
+.timer-hero-panel .timer-control-row .btn-focus-sub:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.15);
-}
-
-/* Column 2: Tasks List in Focus Room */
-.glass-panel-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .focus-task-add-box {
@@ -274,24 +238,21 @@
   gap: 10px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   padding: 10px 14px;
   margin-bottom: 18px;
-  transition: border-color var(--transition-fast);
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .focus-task-add-box:focus-within {
   border-color: #635BFF;
   background: rgba(255, 255, 255, 0.12);
 }
-
-.focus-task-input {
+.focus-task-add-box .focus-task-input {
   width: 100%;
   color: #fff;
   font-size: 0.9rem;
 }
-
-.focus-task-input::placeholder {
+.focus-task-add-box .focus-task-input::placeholder {
   color: #94A3B8;
 }
 
@@ -302,81 +263,69 @@
   overflow-y: auto;
   max-height: 380px;
 }
-
-.focus-task-item {
+.focus-tasks-stack .focus-task-item {
   display: flex;
   align-items: center;
   gap: 12px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   padding: 14px;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
-
-.focus-task-item:hover {
+.focus-tasks-stack .focus-task-item:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
 }
-
-.focus-task-item.active-focus-task {
+.focus-tasks-stack .focus-task-item.active-focus-task {
   border-color: #635BFF;
   background: rgba(99, 91, 255, 0.18);
   box-shadow: 0 0 16px rgba(99, 91, 255, 0.2);
 }
-
-.focus-task-item.completed {
+.focus-tasks-stack .focus-task-item.completed {
   opacity: 0.5;
 }
-
-.focus-task-item.completed .focus-task-text {
+.focus-tasks-stack .focus-task-item.completed .focus-task-text {
   text-decoration: line-through;
 }
-
-.focus-task-drag-handle {
+.focus-tasks-stack .focus-task-item .focus-task-drag-handle {
   color: #64748B;
   cursor: grab;
 }
-
-.focus-task-text {
+.focus-tasks-stack .focus-task-item .focus-task-text {
   flex: 1;
   font-size: 0.92rem;
   font-weight: 500;
   color: #F1F5F9;
 }
 
-/* Column 3: Day Structure & Soundscape */
 .day-structure-stack {
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-bottom: 24px;
 }
-
-.day-structure-card {
+.day-structure-stack .day-structure-card {
   display: flex;
   align-items: flex-start;
   gap: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   padding: 16px;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
-
-.day-structure-card:hover {
+.day-structure-stack .day-structure-card:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
 }
-
-.day-structure-card.active {
+.day-structure-stack .day-structure-card.active {
   border-color: #635BFF;
   background: rgba(99, 91, 255, 0.16);
 }
-
-.structure-icon-box {
+.day-structure-stack .day-structure-card .structure-icon-box {
   width: 38px;
   height: 38px;
   border-radius: 10px;
@@ -386,48 +335,41 @@
   flex-shrink: 0;
   color: #fff;
 }
-
-.structure-title-row {
+.day-structure-stack .day-structure-card .structure-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
 }
-
-.structure-title {
+.day-structure-stack .day-structure-card .structure-title-row .structure-title {
   font-size: 0.94rem;
   font-weight: 700;
   color: #fff;
 }
-
-.structure-badge {
+.day-structure-stack .day-structure-card .structure-title-row .structure-badge {
   font-size: 0.72rem;
   font-weight: 600;
   padding: 2px 8px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   background: rgba(255, 255, 255, 0.1);
   color: #CBD5E1;
 }
-
-.structure-desc {
+.day-structure-stack .day-structure-card .structure-desc {
   font-size: 0.8rem;
   color: #94A3B8;
   line-height: 1.4;
 }
 
-/* Soundscapes Bar */
 .soundscape-section {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
 }
-
-.sound-presets-row {
+.soundscape-section .sound-presets-row {
   display: flex;
   gap: 8px;
   margin-bottom: 14px;
 }
-
-.sound-chip {
+.soundscape-section .sound-presets-row .sound-chip {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -436,25 +378,22 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px 4px;
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   font-size: 0.72rem;
   color: #CBD5E1;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.sound-chip:hover {
+.soundscape-section .sound-presets-row .sound-chip:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
 }
-
-.sound-chip.active {
+.soundscape-section .sound-presets-row .sound-chip.active {
   background: #635BFF;
   border-color: #7E76FF;
   color: #fff;
 }
 
-/* Responsive Focus Room */
 @media (max-width: 1100px) {
   .focus-grid {
     grid-template-columns: 1fr;

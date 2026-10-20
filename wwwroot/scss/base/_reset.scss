@@ -1,0 +1,82 @@
+// ==========================================================================
+// FocusFlow - SCSS Reset & Typography
+// ==========================================================================
+
+@use "variables" as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-sans;
+  color: $text-body;
+  background-color: $bg-page;
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  color: $text-main;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: 1.85rem; font-weight: 800; }
+h2 { font-size: 1.45rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+h4 { font-size: 1.0rem; font-weight: 600; }
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary-hover;
+  }
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+// Scrollbar Customization
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+
+  &-track {
+    background: transparent;
+  }
+
+  &-thumb {
+    background: #D5DBE5;
+    border-radius: $radius-full;
+
+    &:hover {
+      background: #A6AFBE;
+    }
+  }
+}

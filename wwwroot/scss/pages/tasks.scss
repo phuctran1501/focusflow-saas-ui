@@ -1,0 +1,276 @@
+// ==========================================================================
+// FocusFlow - SCSS Tasks Page (SaaS Data Table & Metrics Strip)
+// ==========================================================================
+
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.tasks-toolbar {
+  @include flex-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  &-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 300px;
+
+    .tasks-search-box {
+      position: relative;
+      width: 220px;
+
+      .tasks-search-input {
+        width: 100%;
+        height: 38px;
+        padding: 0 14px 0 34px;
+        background: #fff;
+        border: 1px solid $border-light;
+        border-radius: $radius-md;
+        font-size: 0.86rem;
+        color: $text-main;
+        transition: all $transition-fast;
+
+        &:focus {
+          border-color: $primary;
+          box-shadow: 0 0 0 3px $primary-soft;
+        }
+      }
+
+      .tasks-search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        stroke: $text-light;
+        pointer-events: none;
+      }
+    }
+  }
+
+  &-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .tasks-filter-select {
+      height: 38px;
+      padding: 0 30px 0 12px;
+      background: #fff;
+      border: 1px solid $border-light;
+      border-radius: $radius-md;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: $text-main;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23697386' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+
+      &:hover {
+        border-color: #CBD5E1;
+      }
+    }
+  }
+}
+
+// Metric Summary Chips
+.task-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+
+  .metric-chip {
+    background: #fff;
+    border: 1px solid $border-light;
+    border-radius: $radius-md;
+    padding: 14px 16px;
+    box-shadow: $shadow-xs;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform $transition-fast, box-shadow $transition-fast;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: $shadow-sm;
+    }
+
+    &-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: $text-muted;
+    }
+
+    &-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-family: $font-heading;
+      color: $text-main;
+    }
+  }
+}
+
+// Table Card
+.tasks-table-card {
+  background: #fff;
+  border: 1px solid $border-light;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  .tasks-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.88rem;
+
+    thead {
+      background: #FAFAFC;
+      border-bottom: 1px solid $border-light;
+
+      th {
+        padding: 14px 18px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: $text-muted;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $border-subtle;
+        transition: background-color $transition-fast;
+
+        &:hover {
+          background-color: #F8FAFC;
+        }
+
+        &.completed-row {
+          background-color: #FAFCF9;
+
+          .task-title-cell {
+            text-decoration: line-through;
+            color: $text-light;
+          }
+        }
+
+        td {
+          padding: 14px 18px;
+          vertical-align: middle;
+          color: $text-main;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+.task-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .task-subtasks-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: $text-muted;
+    background: $bg-subtle;
+    border: 1px solid $border-light;
+    padding: 2px 7px;
+    border-radius: 6px;
+  }
+}
+
+.assignee-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .assignee-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: $primary;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    @include flex-center;
+    flex-shrink: 0;
+  }
+
+  .assignee-name {
+    font-weight: 500;
+    color: $text-main;
+  }
+
+  .assignee-team-pill {
+    font-size: 0.7rem;
+    color: $text-light;
+    background: $bg-subtle;
+    border-radius: 4px;
+    padding: 1px 4px;
+  }
+}
+
+.action-menu-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-sm;
+  @include flex-center;
+  color: $text-light;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $bg-subtle;
+    color: $text-main;
+  }
+}
+
+// Responsive
+@include respond-to('xl') {
+  .task-metrics-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@include respond-to('md') {
+  .task-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tasks-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+
+    &-left {
+      flex-direction: column;
+      align-items: stretch;
+
+      .tasks-search-box {
+        width: 100%;
+      }
+    }
+  }
+}

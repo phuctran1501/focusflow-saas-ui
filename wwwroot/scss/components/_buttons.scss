@@ -1,0 +1,87 @@
+// ==========================================================================
+// FocusFlow - SCSS Buttons
+// ==========================================================================
+
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.btn-flow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: $radius-md;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.25;
+  transition: all $transition-fast;
+  text-decoration: none;
+  white-space: nowrap;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.2;
+  }
+
+  &-primary {
+    background: $primary;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(99, 91, 255, 0.3);
+
+    &:hover {
+      background: $primary-hover;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99, 91, 255, 0.4);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      background: $primary-active;
+      transform: translateY(0);
+    }
+  }
+
+  &-secondary {
+    background: $bg-card;
+    color: $text-main;
+    border: 1px solid $border-light;
+
+    &:hover {
+      background: $bg-subtle;
+      border-color: #D3D8E2;
+      color: $text-main;
+    }
+  }
+
+  &-ghost {
+    background: transparent;
+    color: $text-muted;
+
+    &:hover {
+      background: $bg-subtle;
+      color: $text-main;
+    }
+  }
+
+  &-sm {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: $radius-sm;
+  }
+
+  &-lg {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: $radius-md;
+  }
+
+  &-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: $radius-full;
+  }
+}

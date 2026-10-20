@@ -5,7 +5,7 @@
 <p align="left">
   <a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/ASP.NET%20Core-10.0-512BD4?logo=dotnet&logoColor=white" alt="ASP.NET Core" /></a>
   <a href="https://docs.microsoft.com/dotnet/csharp/"><img src="https://img.shields.io/badge/C%23-13.0-239120?logo=csharp&logoColor=white" alt="C#" /></a>
-  <a href="https://www.w3.org/Style/CSS/"><img src="https://img.shields.io/badge/CSS3-Pure%20Vanilla-1572B6?logo=css3&logoColor=white" alt="CSS3" /></a>
+  <a href="https://sass-lang.com/"><img src="https://img.shields.io/badge/SCSS-Sass%201.90-CC6699?logo=sass&logoColor=white" alt="SCSS" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License" /></a>
 </p>
 
@@ -22,37 +22,41 @@ Built **UI-First** to master modern web layout architecture, responsive Flexbox/
 ## 📸 Screenshots & Previews
 
 ### 01. Dashboard (`/`)
-*Greeting, 4 KPI cards, interactive CSS weekly focus bar chart, live time tracker widget, and today's priority plan.*
+
+_Greeting, 4 KPI cards, interactive CSS weekly focus bar chart, live time tracker widget, and today's priority plan._
 ![FocusFlow Dashboard](wwwroot/images/dashboard.png)
 
 ---
 
 ### 02. Focus Room (`/Focus`)
-*Cosmic dark-mode distraction-free flow state, circular countdown timer with animated SVG ring progress, session tasks, day structure presets, and ambient soundscapes synthesized via Web Audio API.*
+
+_Cosmic dark-mode distraction-free flow state, circular countdown timer with animated SVG ring progress, session tasks, day structure presets, and ambient soundscapes synthesized via Web Audio API._
 ![Focus Room](wwwroot/images/focus-room.png)
 
 ---
 
 ### 03. My Tasks (`/Tasks`)
-*Comprehensive SaaS table layout featuring status metric chips, priority badges, category filters, interactive completion checkboxes, and dynamic task creation modal.*
+
+_Comprehensive SaaS table layout featuring status metric chips, priority badges, category filters, interactive completion checkboxes, and dynamic task creation modal._
 ![My Tasks](wwwroot/images/tasks.png)
 
 ---
 
 ### 04. Insights (`/Insights`)
-*Productivity analytics dashboard featuring a weekly score indicator, smooth spline wave SVG chart, 12-day streak card with community percentiles, radial donut completion ring, and AI productivity highlights.*
+
+_Productivity analytics dashboard featuring a weekly score indicator, smooth spline wave SVG chart, 12-day streak card with community percentiles, radial donut completion ring, and AI productivity highlights._
 ![Productivity Insights](wwwroot/images/insights.png)
 
 ---
 
 ## 🚀 Key Features
 
-| Screen | Route | Key UI Components |
-|---|---|---|
-| **Dashboard** | `/` | Greeting banner, 4 KPI metric cards (Projects, Tasks, Hours, Dot streak matrix), weekly focus bar chart with peak indicator & tooltips, quick time tracker widget, today's plan. |
-| **Focus Room** | `/Focus` | Mode tabs (`Focus 25m`, `Short Break 5m`, `Long Break 15m`), circular SVG radial timer, start/pause/reset/skip controls, checkable goal queue, Day Structures (*Deep Work*, *Study Mode*, *Power Day*), and native Web Audio rain ambient generator. |
-| **My Tasks** | `/Tasks` | Top search bar, filter tabs (`All`, `To do`, `Doing`, `Overdue`, `Completed`), priority filter, 6 metric summary chips, clean SaaS table with avatars and subtask counters, and interactive "+ Create Task" modal. |
-| **Insights** | `/Insights` | Weekly productivity score (84.2%), smooth SVG wave spline chart with gradient fill, 12-day streak card with avatar stack, donut chart with 85% completion, and 3 highlight cards (*Peak Focus*, *Consistency King*, *Rest Insight*). |
+| Screen         | Route       | Key UI Components                                                                                                                                                                                                                                    |
+| -------------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dashboard**  | `/`         | Greeting banner, 4 KPI metric cards (Projects, Tasks, Hours, Dot streak matrix), weekly focus bar chart with peak indicator & tooltips, quick time tracker widget, today's plan.                                                                     |
+| **Focus Room** | `/Focus`    | Mode tabs (`Focus 25m`, `Short Break 5m`, `Long Break 15m`), circular SVG radial timer, start/pause/reset/skip controls, checkable goal queue, Day Structures (_Deep Work_, _Study Mode_, _Power Day_), and native Web Audio rain ambient generator. |
+| **My Tasks**   | `/Tasks`    | Top search bar, filter tabs (`All`, `To do`, `Doing`, `Overdue`, `Completed`), priority filter, 6 metric summary chips, clean SaaS table with avatars and subtask counters, and interactive "+ Create Task" modal.                                   |
+| **Insights**   | `/Insights` | Weekly productivity score (84.2%), smooth SVG wave spline chart with gradient fill, 12-day streak card with avatar stack, donut chart with 85% completion, and 3 highlight cards (_Peak Focus_, _Consistency King_, _Rest Insight_).                 |
 
 ---
 
@@ -132,21 +136,26 @@ focusflow-saas-ui/
 ## 💻 Getting Started Locally
 
 ### Prerequisites
+
 - [.NET 10 SDK](https://dotnet.microsoft.com/download) (or .NET 8 / 9 SDK compatible)
 
 ### Steps to Run
+
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/<YOUR_USERNAME>/focusflow-saas-ui.git
    cd focusflow-saas-ui
    ```
 
 2. Restore dependencies and build:
+
    ```bash
    dotnet build
    ```
 
 3. Run the development server:
+
    ```bash
    dotnet run --launch-profile http
    ```
@@ -169,4 +178,5 @@ focusflow-saas-ui/
 ---
 
 ## 📄 License
+
 This project is open-source under the [MIT License](LICENSE).

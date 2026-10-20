@@ -1,0 +1,385 @@
+@model FocusFlow.ViewModels.FocusViewModel
+@{
+    ViewData["Title"] = "Focus Room";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/focus.css" asp-append-version="true" />
+}
+
+<div class="focus-room-container">
+    <!-- Top Bar -->
+    <div class="focus-room-topbar">
+        <div class="focus-session-meta">
+            <span class="focus-session-badge">Deep Flow Space</span>
+            <span class="focus-session-title" id="activeTaskHeading">Current Goal: @Model.CurrentTaskTitle</span>
+        </div>
+
+        <div class="focus-room-actions">
+            <button type="button" class="focus-glass-btn" id="ambientToggleBtn" title="Ambient Soundscape">
+                <span id="soundStatusIcon">🌧️</span>
+                <span id="soundStatusText">Rain Ambient</span>
+            </button>
+            <button type="button" class="focus-glass-btn" id="fullscreenBtn" title="Distraction-Free Mode">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+                <span>Full View</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 3-Column Focus Grid -->
+    <div class="focus-grid">
+        <!-- 1. Centerpiece: Circular Timer -->
+        <div class="glass-panel timer-hero-panel">
+            <!-- Mode Switcher -->
+            <div class="timer-mode-pills">
+                <button type="button" class="timer-mode-btn active" data-minutes="25" data-mode="Focus">Focus 25m</button>
+                <button type="button" class="timer-mode-btn" data-minutes="5" data-mode="Short Break">Short Break</button>
+                <button type="button" class="timer-mode-btn" data-minutes="15" data-mode="Long Break">Long Break</button>
+            </div>
+
+            <!-- Big Circular Countdown -->
+            <div class="timer-dial-wrapper">
+                <svg class="timer-svg-ring" viewBox="0 0 260 260">
+                    <circle class="ring-bg" cx="130" cy="130" r="120" />
+                    <circle class="ring-progress" id="ringProgress" cx="130" cy="130" r="120" />
+                </svg>
+                <div class="timer-center-text">
+                    <div class="timer-digits" id="timerDigits">25:00</div>
+                    <div class="timer-status-hint" id="timerModeHint">Focus Session</div>
+                </div>
+            </div>
+
+            <!-- Timer Action Buttons -->
+            <div class="timer-control-row">
+                <button type="button" class="btn-focus-sub" id="timerResetBtn" title="Reset Session">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                </button>
+
+                <button type="button" class="btn-focus-main" id="timerMainPlayBtn" title="Start Session">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" id="playIconSvg">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                </button>
+
+                <button type="button" class="btn-focus-sub" id="timerSkipBtn" title="Complete & Skip">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. Tasks Column (Matching Screenshot 2) -->
+        <div class="glass-panel">
+            <div class="glass-panel-title">
+                <span>Session Tasks</span>
+                <span style="font-size: 0.78rem; color: #94A3B8;">Target: 3 today</span>
+            </div>
+
+            <div class="focus-task-add-box">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <input type="text" id="focusNewTaskInput" class="focus-task-input" placeholder="Add a new task and press Enter..." />
+            </div>
+
+            <div class="focus-tasks-stack" id="focusTasksContainer">
+                @for (int i = 0; i < Model.FocusTasks.Count; i++)
+                {
+                    var task = Model.FocusTasks[i];
+                    <div class="focus-task-item @(i == 0 ? "active-focus-task" : "") @(task.IsCompleted ? "completed" : "")" data-title="@task.Title">
+                        <div class="focus-task-drag-handle">⠿</div>
+                        <label class="flow-checkbox-wrapper">
+                            <input type="checkbox" class="flow-checkbox-input focus-task-check" @(task.IsCompleted ? "checked" : "") />
+                            <span class="flow-checkbox-mark"></span>
+                        </label>
+                        <span class="focus-task-text">@task.Title</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- 3. Day Structure & Ambient Sound -->
+        <div class="glass-panel">
+            <div class="glass-panel-title">
+                <span>Day Structure</span>
+                <span style="font-size: 0.78rem; color: #94A3B8;">Presets</span>
+            </div>
+
+            <div class="day-structure-stack">
+                @foreach (var s in Model.DayStructures)
+                {
+                    <div class="day-structure-card @(s.IsActive ? "active" : "")" data-title="@s.Title">
+                        <div class="structure-icon-box" style="background: @s.IconColor;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                <path d="M9 12h6m-6-4h6m-6 8h4"></path>
+                            </svg>
+                        </div>
+                        <div style="flex: 1;">
+                            <div class="structure-title-row">
+                                <span class="structure-title">@s.Title</span>
+                                <span class="structure-badge">@s.Badge</span>
+                            </div>
+                            <div class="structure-desc">@s.Description</div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Ambient Soundscapes -->
+            <div class="soundscape-section">
+                <div style="font-size: 0.82rem; font-weight: 700; color: #E2E8F0; margin-bottom: 10px;">Focus Ambient Soundscape</div>
+                <div class="sound-presets-row">
+                    @foreach (var sound in Model.AmbientSounds)
+                    {
+                        <div class="sound-chip @(sound.IsActive ? "active" : "")" data-sound="@sound.Id" data-name="@sound.Name" data-icon="@sound.Icon">
+                            <span style="font-size: 1.1rem;">@sound.Icon</span>
+                            <span>@sound.Name</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Circular Timer Logic
+        let totalSeconds = 25 * 60;
+        let remainingSeconds = totalSeconds;
+        let timerRunning = false;
+        let timerInterval = null;
+
+        const timerDigits = document.getElementById('timerDigits');
+        const timerModeHint = document.getElementById('timerModeHint');
+        const playBtn = document.getElementById('timerMainPlayBtn');
+        const playIconSvg = document.getElementById('playIconSvg');
+        const resetBtn = document.getElementById('timerResetBtn');
+        const skipBtn = document.getElementById('timerSkipBtn');
+        const ringProgress = document.getElementById('ringProgress');
+        const circumference = 2 * Math.PI * 120; // 753.98
+
+        ringProgress.style.strokeDasharray = circumference;
+
+        function updateDisplay() {
+            const m = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+            const s = (remainingSeconds % 60).toString().padStart(2, '0');
+            timerDigits.textContent = `${m}:${s}`;
+
+            const offset = circumference - (remainingSeconds / totalSeconds) * circumference;
+            ringProgress.style.strokeDashoffset = offset;
+        }
+
+        function toggleTimer() {
+            timerRunning = !timerRunning;
+            if (timerRunning) {
+                playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+                timerInterval = setInterval(() => {
+                    if (remainingSeconds > 0) {
+                        remainingSeconds--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                        alert('Focus session complete! Take a well-deserved break.');
+                    }
+                }, 1000);
+            } else {
+                clearInterval(timerInterval);
+                playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+            }
+        }
+
+        playBtn.addEventListener('click', toggleTimer);
+
+        resetBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            remainingSeconds = totalSeconds;
+            updateDisplay();
+            playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        });
+
+        skipBtn.addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            remainingSeconds = 0;
+            updateDisplay();
+            playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        });
+
+        // Mode Switcher (Focus, Short Break, Long Break)
+        document.querySelectorAll('.timer-mode-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const mins = parseInt(this.dataset.minutes);
+                const mode = this.dataset.mode;
+                totalSeconds = mins * 60;
+                remainingSeconds = totalSeconds;
+                timerModeHint.textContent = mode;
+                clearInterval(timerInterval);
+                timerRunning = false;
+                playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                updateDisplay();
+            });
+        });
+
+        // Day Structure Click
+        document.querySelectorAll('.day-structure-card').forEach(card => {
+            card.addEventListener('click', function () {
+                document.querySelectorAll('.day-structure-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                const title = this.dataset.title;
+                if (title === 'Deep Work') {
+                    totalSeconds = 50 * 60;
+                } else if (title === 'Study Mode') {
+                    totalSeconds = 45 * 60;
+                } else {
+                    totalSeconds = 25 * 60;
+                }
+                remainingSeconds = totalSeconds;
+                clearInterval(timerInterval);
+                timerRunning = false;
+                playBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+                updateDisplay();
+            });
+        });
+
+        // Task Item Selection & Toggle
+        const activeTaskHeading = document.getElementById('activeTaskHeading');
+        const tasksContainer = document.getElementById('focusTasksContainer');
+
+        function bindTaskEvents() {
+            document.querySelectorAll('.focus-task-item').forEach(item => {
+                item.addEventListener('click', function (e) {
+                    if (e.target.type === 'checkbox') return;
+                    document.querySelectorAll('.focus-task-item').forEach(i => i.classList.remove('active-focus-task'));
+                    this.classList.add('active-focus-task');
+                    activeTaskHeading.textContent = 'Current Goal: ' + this.dataset.title;
+                });
+            });
+
+            document.querySelectorAll('.focus-task-check').forEach(chk => {
+                chk.addEventListener('change', function () {
+                    const parent = this.closest('.focus-task-item');
+                    if (parent) {
+                        if (this.checked) parent.classList.add('completed');
+                        else parent.classList.remove('completed');
+                    }
+                });
+            });
+        }
+
+        bindTaskEvents();
+
+        // Add New Task Input
+        const newTaskInput = document.getElementById('focusNewTaskInput');
+        if (newTaskInput) {
+            newTaskInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    const text = this.value.trim();
+                    const newDiv = document.createElement('div');
+                    newDiv.className = 'focus-task-item active-focus-task';
+                    newDiv.dataset.title = text;
+                    newDiv.innerHTML = `
+                        <div class="focus-task-drag-handle">⠿</div>
+                        <label class="flow-checkbox-wrapper">
+                            <input type="checkbox" class="flow-checkbox-input focus-task-check" />
+                            <span class="flow-checkbox-mark"></span>
+                        </label>
+                        <span class="focus-task-text">${text}</span>
+                    `;
+                    document.querySelectorAll('.focus-task-item').forEach(i => i.classList.remove('active-focus-task'));
+                    tasksContainer.prepend(newDiv);
+                    activeTaskHeading.textContent = 'Current Goal: ' + text;
+                    this.value = '';
+                    bindTaskEvents();
+                }
+            });
+        }
+
+        // Ambient Sound Simulator (Web Audio API Synthesizer)
+        let audioCtx = null;
+        let noiseNode = null;
+        let isAudioPlaying = false;
+
+        function startRainNoise() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            let lastOut = 0.0;
+            // Pink/Brown noise generator for relaxing rain
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                data[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = data[i];
+                data[i] *= 0.15; // gentle volume
+            }
+
+            noiseNode = audioCtx.createBufferSource();
+            noiseNode.buffer = buffer;
+            noiseNode.loop = true;
+            noiseNode.connect(audioCtx.destination);
+            noiseNode.start(0);
+            isAudioPlaying = true;
+        }
+
+        function stopRainNoise() {
+            if (noiseNode) {
+                noiseNode.stop();
+                noiseNode.disconnect();
+                noiseNode = null;
+            }
+            isAudioPlaying = false;
+        }
+
+        const ambientToggleBtn = document.getElementById('ambientToggleBtn');
+        if (ambientToggleBtn) {
+            ambientToggleBtn.addEventListener('click', function () {
+                if (!isAudioPlaying) {
+                    startRainNoise();
+                    this.classList.add('active');
+                } else {
+                    stopRainNoise();
+                    this.classList.remove('active');
+                }
+            });
+        }
+
+        // Sound Chip Click
+        document.querySelectorAll('.sound-chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.sound-chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById('soundStatusIcon').textContent = this.dataset.icon;
+                document.getElementById('soundStatusText').textContent = this.dataset.name;
+                if (!isAudioPlaying) {
+                    startRainNoise();
+                    ambientToggleBtn.classList.add('active');
+                }
+            });
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
+}

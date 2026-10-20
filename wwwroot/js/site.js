@@ -18,6 +18,16 @@ document.addEventListener('DOMContentLoaded', function () {
             appSidebar.classList.remove('sidebar-open');
             sidebarBackdrop.classList.remove('active');
         });
+
+        // Close sidebar when clicking any navigation link on mobile
+        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+            link.addEventListener('click', function () {
+                if (window.innerWidth <= 820) {
+                    appSidebar.classList.remove('sidebar-open');
+                    sidebarBackdrop.classList.remove('active');
+                }
+            });
+        });
     }
 
     // 2. Top Header Blur on Scroll

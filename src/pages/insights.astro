@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Productivity Insights" activePage="insights" pageCss="/css/pages/insights.css">
+  <!-- Insights Header Bar -->
+  <div class="insights-header">
+    <div>
+      <h1 class="insights-title">Productivity Insights</h1>
+      <p class="insights-subtitle">Your personal performance breakdown and focus trends.</p>
+    </div>
+
+    <div class="insights-controls">
+      <div class="pill-tab-group" id="insightsTimeframeTabs">
+        <button type="button" class="pill-tab">Day</button>
+        <button type="button" class="pill-tab active">Week</button>
+        <button type="button" class="pill-tab">Month</button>
+      </div>
+
+      <button type="button" class="btn-flow btn-flow-primary" id="downloadReportBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Download Report</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero Analytics Card -->
+  <div class="insights-hero-card">
+    <div class="insights-hero-top">
+      <div>
+        <div class="score-meta-label">Weekly Productivity Score</div>
+        <div class="score-value-row">
+          <span class="score-huge-text" id="displayScore">100%</span>
+          <span class="flow-trend-pill positive">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+            <span>Optimal Baseline</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="chart-legend-wrap">
+        <div class="legend-item">
+          <span class="legend-dot-current"></span>
+          <span>Current Week</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot-prev"></span>
+          <span>Previous Week</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smooth Wave SVG Chart -->
+    <div class="wave-chart-wrapper">
+      <svg class="wave-svg" viewBox="0 0 1000 200" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="waveGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#635BFF" stop-opacity="0.32" />
+            <stop offset="100%" stop-color="#635BFF" stop-opacity="0.0" />
+          </linearGradient>
+        </defs>
+
+        <path d="M 0 140 C 160 160, 320 120, 500 130 C 680 140, 840 100, 1000 120"
+              fill="none" stroke="#E2E8F0" stroke-width="3" stroke-dasharray="6 6" />
+
+        <path d="M 0 120 C 150 110, 280 60, 420 50 C 560 40, 680 130, 820 110 C 910 95, 960 70, 1000 65 L 1000 200 L 0 200 Z"
+              fill="url(#waveGradient)" />
+
+        <path d="M 0 120 C 150 110, 280 60, 420 50 C 560 40, 680 130, 820 110 C 910 95, 960 70, 1000 65"
+              fill="none" stroke="#635BFF" stroke-width="4" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <div class="wave-days-row" style="display: flex; justify-content: space-between; padding: 12px 16px 0; font-size: 0.82rem; font-weight: 600; color: #94A3B8;">
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+    </div>
+  </div>
+
+  <!-- Breakdown Cards Grid -->
+  <div class="insights-grid">
+    <!-- Peak Hours -->
+    <div class="flow-card">
+      <div class="flow-card-header">
+        <div class="flow-card-title-group">
+          <h3 class="flow-card-title">Peak Productivity Hours</h3>
+          <span class="flow-card-subtitle">Optimal timeframes for deep focus</span>
+        </div>
+      </div>
+      <div style="padding: 12px 0;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: #1E293B; margin-bottom: 4px;">09:00 - 11:30</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          Morning blocks provide the highest cognitive endurance with minimal interruptions.
+        </p>
+      </div>
+    </div>
+
+    <!-- Focus Session Quality -->
+    <div class="flow-card">
+      <div class="flow-card-header">
+        <div class="flow-card-title-group">
+          <h3 class="flow-card-title">Session Flow Quality</h3>
+          <span class="flow-card-subtitle">Consistency across intervals</span>
+        </div>
+      </div>
+      <div style="padding: 12px 0;">
+        <div style="font-size: 1.8rem; font-weight: 800; color: #10B981; margin-bottom: 4px;">98.4%</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          High immersion rate with low tab switching during active Pomodoro sessions.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

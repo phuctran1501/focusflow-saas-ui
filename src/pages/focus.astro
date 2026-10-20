@@ -1,0 +1,587 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Focus Room" activePage="focus" pageCss="/css/pages/focus.css">
+  <div class="focus-room-container" id="focusRoomContainer">
+    <!-- Top Action / Context Bar -->
+    <div class="focus-room-topbar">
+      <div class="focus-session-meta">
+        <span class="focus-session-title">
+          Current Goal: <span id="focusGoalDisplay" contenteditable="true" title="Click to edit session goal" style="border-bottom: 1px dashed rgba(255,255,255,0.4); outline: none;">Design & Architecture Sprint</span>
+        </span>
+        <span class="focus-session-badge">Deep Flow Space</span>
+      </div>
+
+      <div class="focus-room-actions">
+        <!-- Ambient Status Badge -->
+        <button type="button" class="focus-glass-btn" id="topAmbientStatusBtn" title="Current Soundscape">
+          <span id="topAmbientIcon">🌧️</span>
+          <span id="topAmbientLabel">Rain Ambient</span>
+        </button>
+
+        <!-- Full View Distraction-Free Toggle -->
+        <button type="button" class="focus-glass-btn" id="fullViewToggleBtn" title="Toggle Fullscreen / Distraction-free mode">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <polyline points="9 21 3 21 3 15"></polyline>
+            <line x1="21" y1="3" x2="14" y2="10"></line>
+            <line x1="3" y1="21" x2="10" y2="14"></line>
+          </svg>
+          <span id="fullViewBtnText">Full View</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3-Column Focus Grid -->
+    <div class="focus-grid">
+      <!-- 1. Timer Hero Panel -->
+      <div class="glass-panel timer-hero-panel">
+        <div class="timer-mode-pills">
+          <button type="button" class="timer-mode-btn active" data-time="25" data-mode="FOCUS">Focus 25m</button>
+          <button type="button" class="timer-mode-btn" data-time="5" data-mode="SHORT BREAK">Short Break</button>
+          <button type="button" class="timer-mode-btn" data-time="15" data-mode="LONG BREAK">Long Break</button>
+        </div>
+
+        <div class="timer-dial-wrapper">
+          <svg class="timer-svg-ring" viewBox="0 0 280 280">
+            <circle class="ring-bg" cx="140" cy="140" r="120"></circle>
+            <circle class="ring-progress" id="ringProgress" cx="140" cy="140" r="120"></circle>
+          </svg>
+          <div class="timer-center-text">
+            <div class="timer-digits-wrapper" id="timerDigitsWrapper" title="Click to start / pause">
+              <span class="timer-digits" id="timerDigits">25:00</span>
+            </div>
+            <span class="timer-status-hint" id="timerModeHint">FOCUS</span>
+          </div>
+        </div>
+
+        <!-- Custom Focus Session Inline Input (No prompt/alert!) -->
+        <div class="timer-adjust-controls">
+          <button type="button" class="btn-time-adjust" id="btnMinus5m" title="Subtract 5 minutes">-5m</button>
+          
+          <div style="display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 9999px; padding: 2px 10px;">
+            <input type="number" id="inlineMinutesInput" min="1" max="180" value="25" style="width: 44px; background: transparent; border: none; color: #FFFFFF; font-weight: 700; font-size: 0.85rem; text-align: center; outline: none;" />
+            <span style="font-size: 0.75rem; color: #94A3B8;">min</span>
+            <button type="button" id="btnApplyMinutes" style="background: #635BFF; border: none; color: #fff; font-size: 0.7rem; font-weight: 700; border-radius: 9999px; padding: 2px 8px; cursor: pointer;">Set</button>
+          </div>
+
+          <button type="button" class="btn-time-adjust" id="btnPlus5m" title="Add 5 minutes">+5m</button>
+        </div>
+
+        <div class="timer-control-row">
+          <button type="button" class="btn-focus-sub" id="timerResetBtn" title="Reset Session">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+          </button>
+          <button type="button" class="btn-focus-main" id="timerMainPlayBtn" title="Start Focus Session">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </button>
+          <button type="button" class="btn-focus-sub" id="timerSkipBtn" title="Skip to next phase">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Session Tasks Panel (Draggable with Delete & Clean State) -->
+      <div class="glass-panel">
+        <div class="glass-panel-title">
+          <span>Session Tasks</span>
+          <span style="font-size: 0.8rem; color: #94A3B8; font-weight: 500;" id="sessionTasksCount">0 tasks</span>
+        </div>
+
+        <div class="focus-task-add-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <input type="text" id="newSessionTaskInput" class="focus-task-input" placeholder="Add a new task and press Enter..." style="background: transparent; border: none; outline: none;" />
+        </div>
+
+        <div class="focus-tasks-stack" id="sessionTasksList">
+          <div id="sessionEmptyState" style="text-align: center; padding: 24px 10px; color: #64748B; font-size: 0.85rem;">
+            No session tasks yet. Type above to add your first goal.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Ambient Soundscapes & Day Protocol -->
+      <div class="glass-panel">
+        <div class="glass-panel-title">
+          <span>Focus Ambient Soundscape</span>
+          <span id="ytPlayerStateLabel" style="font-size: 0.75rem; color: #A5B4FC; font-weight: 600;">Ready</span>
+        </div>
+
+        <div class="soundscape-section">
+          <div class="sound-presets-row" id="soundPresetsRow">
+            <div class="sound-chip" data-sound="rain" data-yt="-OekvEFm1lo" data-name="Gentle Rain" data-icon="🌧️">
+              <span style="font-size: 1.25rem;">🌧️</span>
+              <span>Gentle Rain</span>
+            </div>
+            <div class="sound-chip" data-sound="waves" data-yt="4xDzrJKXOOY" data-name="Alpha Waves" data-icon="🌊">
+              <span style="font-size: 1.25rem;">🌊</span>
+              <span>Alpha Waves</span>
+            </div>
+            <div class="sound-chip" data-sound="forest" data-yt="NvftPSb5Xtw" data-name="Pine Forest" data-icon="🌲">
+              <span style="font-size: 1.25rem;">🌲</span>
+              <span>Pine Forest</span>
+            </div>
+            <div class="sound-chip" data-sound="cafe" data-yt="1fueZCTYkpA" data-name="Cozy Cafe" data-icon="☕">
+              <span style="font-size: 1.25rem;">☕</span>
+              <span>Cozy Cafe</span>
+            </div>
+          </div>
+
+          <div class="soundscape-volume-bar" style="display: flex; align-items: center; gap: 10px; margin-top: 14px;">
+            <button type="button" id="ambientTogglePlayBtn" style="background: rgba(99, 91, 255, 0.25); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+            </button>
+            <input type="range" id="soundscapeVolume" min="0" max="100" value="70" style="flex: 1; accent-color: #635BFF; cursor: pointer;" />
+            <span id="volumePercentText" style="font-size: 0.75rem; color: #94A3B8; min-width: 30px;">70%</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <div style="font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 12px;">Daily Flow Protocol</div>
+          <div class="day-structure-stack">
+            <div class="day-structure-card active">
+              <div class="structure-icon-box" style="background: #635BFF;">01</div>
+              <div>
+                <div class="structure-title-row">
+                  <span class="structure-title">Deep Work</span>
+                  <span class="structure-badge">25 min</span>
+                </div>
+                <div class="structure-desc">Single-task immersion without distraction.</div>
+              </div>
+            </div>
+            <div class="day-structure-card">
+              <div class="structure-icon-box" style="background: rgba(255,255,255,0.08);">02</div>
+              <div>
+                <div class="structure-title-row">
+                  <span class="structure-title">Short Rest</span>
+                  <span class="structure-badge">5 min</span>
+                </div>
+                <div class="structure-desc">Hydrate and step away from the monitor.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden single YouTube IFrame Player for lightweight, zero-lag background audio looping -->
+  <div id="yt-player-container" style="position: fixed; width: 1px; height: 1px; bottom: -200px; right: -200px; opacity: 0.001; pointer-events: none; overflow: hidden; z-index: -999;">
+    <div id="yt-player"></div>
+  </div>
+</Layout>
+
+<script is:inline src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+  // ==========================================================================
+  // 1. YouTube Lightweight Background Audio Engine (Zero-Lag, Seamless Loop)
+  // ==========================================================================
+  let ytPlayer: any = null;
+  let activeSoundId = 'rain';
+  let activeYtVideoId = '-OekvEFm1lo';
+  let isSoundPlaying = false;
+  let currentVolume = 70;
+
+  const ytStateLabel = document.getElementById('ytPlayerStateLabel');
+  const ambientPlayBtn = document.getElementById('ambientTogglePlayBtn');
+  const volumeSlider = document.getElementById('soundscapeVolume') as HTMLInputElement | null;
+  const volumePercentText = document.getElementById('volumePercentText');
+  const topAmbientIcon = document.getElementById('topAmbientIcon');
+  const topAmbientLabel = document.getElementById('topAmbientLabel');
+  const topAmbientStatusBtn = document.getElementById('topAmbientStatusBtn');
+  const soundChips = document.querySelectorAll('.sound-chip');
+
+  (window as any).onYouTubeIframeAPIReady = function() {
+    ytPlayer = new (window as any).YT.Player('yt-player', {
+      height: '1',
+      width: '1',
+      videoId: activeYtVideoId,
+      playerVars: {
+        autoplay: 0,
+        controls: 0,
+        disablekb: 1,
+        fs: 0,
+        rel: 0,
+        modestbranding: 1,
+        playsinline: 1
+      },
+      events: {
+        onReady: (event: any) => {
+          event.target.setVolume(currentVolume);
+          if (ytStateLabel) ytStateLabel.textContent = 'Ready';
+        },
+        onStateChange: (event: any) => {
+          // Automatic seamless loop on track completion without lag
+          if (event.data === 0) {
+            event.target.playVideo();
+          } else if (event.data === 1) { // Playing
+            isSoundPlaying = true;
+            updatePlayBtnIcon(true);
+            if (ytStateLabel) ytStateLabel.textContent = 'Playing';
+            topAmbientStatusBtn?.classList.add('active');
+          } else if (event.data === 2) { // Paused
+            isSoundPlaying = false;
+            updatePlayBtnIcon(false);
+            if (ytStateLabel) ytStateLabel.textContent = 'Paused';
+            topAmbientStatusBtn?.classList.remove('active');
+          }
+        }
+      }
+    });
+  };
+
+  function updatePlayBtnIcon(playing: boolean) {
+    if (!ambientPlayBtn) return;
+    if (playing) {
+      ambientPlayBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+    } else {
+      ambientPlayBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+    }
+  }
+
+  function playSoundscape(soundId: string, videoId: string, name: string, icon: string) {
+    soundChips.forEach(c => c.classList.remove('active'));
+    const targetChip = document.querySelector(`.sound-chip[data-sound="${soundId}"]`);
+    targetChip?.classList.add('active');
+
+    if (topAmbientIcon) topAmbientIcon.textContent = icon;
+    if (topAmbientLabel) topAmbientLabel.textContent = name;
+
+    activeSoundId = soundId;
+    activeYtVideoId = videoId;
+
+    if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+      ytPlayer.loadVideoById({
+        videoId: videoId,
+        startSeconds: 0
+      });
+      ytPlayer.setVolume(currentVolume);
+      ytPlayer.playVideo();
+      isSoundPlaying = true;
+      updatePlayBtnIcon(true);
+    }
+  }
+
+  soundChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const soundId = chip.getAttribute('data-sound') || 'rain';
+      const videoId = chip.getAttribute('data-yt') || '-OekvEFm1lo';
+      const name = chip.getAttribute('data-name') || 'Ambient';
+      const icon = chip.getAttribute('data-icon') || '🎵';
+
+      if (activeSoundId === soundId && isSoundPlaying) {
+        if (ytPlayer && ytPlayer.pauseVideo) {
+          ytPlayer.pauseVideo();
+          chip.classList.remove('active');
+        }
+      } else {
+        playSoundscape(soundId, videoId, name, icon);
+      }
+    });
+  });
+
+  ambientPlayBtn?.addEventListener('click', () => {
+    if (!ytPlayer) return;
+    if (isSoundPlaying) {
+      ytPlayer.pauseVideo();
+    } else {
+      ytPlayer.playVideo();
+    }
+  });
+
+  volumeSlider?.addEventListener('input', (e) => {
+    const val = parseInt((e.target as HTMLInputElement).value, 10);
+    currentVolume = val;
+    if (volumePercentText) volumePercentText.textContent = `${val}%`;
+    if (ytPlayer && typeof ytPlayer.setVolume === 'function') {
+      ytPlayer.setVolume(val);
+    }
+  });
+
+  // ==========================================================================
+  // 2. Circular Timer with Inline UI Custom Duration
+  // ==========================================================================
+  let totalSeconds = 25 * 60;
+  let remainingSeconds = totalSeconds;
+  let timerRunning = false;
+  let timerInterval: any = null;
+
+  const timerDigits = document.getElementById('timerDigits');
+  const timerModeHint = document.getElementById('timerModeHint');
+  const playBtn = document.getElementById('timerMainPlayBtn');
+  const resetBtn = document.getElementById('timerResetBtn');
+  const skipBtn = document.getElementById('timerSkipBtn');
+  const ringProgress = document.getElementById('ringProgress') as SVGCircleElement | null;
+  const inlineMinutesInput = document.getElementById('inlineMinutesInput') as HTMLInputElement | null;
+  const btnApplyMinutes = document.getElementById('btnApplyMinutes');
+  const btnMinus5m = document.getElementById('btnMinus5m');
+  const btnPlus5m = document.getElementById('btnPlus5m');
+
+  const circumference = 2 * Math.PI * 120; // 753.98
+  if (ringProgress) {
+    ringProgress.style.strokeDasharray = `${circumference}`;
+  }
+
+  function updateDisplay() {
+    if (!timerDigits || !ringProgress) return;
+    const m = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+    const s = (remainingSeconds % 60).toString().padStart(2, '0');
+    timerDigits.textContent = `${m}:${s}`;
+
+    const offset = circumference - (remainingSeconds / totalSeconds) * circumference;
+    ringProgress.style.strokeDashoffset = `${offset}`;
+  }
+
+  function setDurationMinutes(mins: number) {
+    mins = Math.max(1, Math.min(180, mins || 25));
+    totalSeconds = mins * 60;
+    remainingSeconds = totalSeconds;
+    if (inlineMinutesInput) inlineMinutesInput.value = `${mins}`;
+    if (timerRunning) {
+      toggleTimer();
+    }
+    updateDisplay();
+  }
+
+  btnApplyMinutes?.addEventListener('click', () => {
+    if (!inlineMinutesInput) return;
+    const val = parseInt(inlineMinutesInput.value, 10);
+    if (!isNaN(val)) {
+      setDurationMinutes(val);
+      document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.remove('active'));
+      if (timerModeHint) timerModeHint.textContent = `CUSTOM (${val}m)`;
+    }
+  });
+
+  inlineMinutesInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      btnApplyMinutes?.click();
+    }
+  });
+
+  btnPlus5m?.addEventListener('click', () => {
+    const currentMins = Math.round(totalSeconds / 60);
+    setDurationMinutes(currentMins + 5);
+  });
+
+  btnMinus5m?.addEventListener('click', () => {
+    const currentMins = Math.round(totalSeconds / 60);
+    setDurationMinutes(Math.max(1, currentMins - 5));
+  });
+
+  function toggleTimer() {
+    timerRunning = !timerRunning;
+    if (timerRunning) {
+      if (playBtn) {
+        playBtn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+      }
+      timerInterval = setInterval(() => {
+        if (remainingSeconds > 0) {
+          remainingSeconds--;
+          updateDisplay();
+        } else {
+          clearInterval(timerInterval);
+          timerRunning = false;
+          if (playBtn) {
+            playBtn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+          }
+        }
+      }, 1000);
+    } else {
+      clearInterval(timerInterval);
+      if (playBtn) {
+        playBtn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+      }
+    }
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    remainingSeconds = totalSeconds;
+    updateDisplay();
+    if (playBtn) {
+      playBtn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+    }
+  }
+
+  playBtn?.addEventListener('click', toggleTimer);
+  document.getElementById('timerDigitsWrapper')?.addEventListener('click', toggleTimer);
+  resetBtn?.addEventListener('click', resetTimer);
+
+  document.querySelectorAll('.timer-mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const time = parseInt(btn.getAttribute('data-time') || '25', 10);
+      const mode = (btn.getAttribute('data-mode') || 'FOCUS').toUpperCase();
+      if (timerModeHint) timerModeHint.textContent = mode;
+      setDurationMinutes(time);
+    });
+  });
+
+  skipBtn?.addEventListener('click', () => {
+    const isFocus = remainingSeconds > 5 * 60;
+    if (isFocus) {
+      const shortBreakBtn = document.querySelector('.timer-mode-btn[data-mode="SHORT BREAK"]') as HTMLElement | null;
+      shortBreakBtn?.click();
+    } else {
+      const focusBtn = document.querySelector('.timer-mode-btn[data-mode="FOCUS"]') as HTMLElement | null;
+      focusBtn?.click();
+    }
+  });
+
+  // ==========================================================================
+  // 3. Draggable Session Tasks with More Options Menu & Deletion
+  // ==========================================================================
+  const sessionTasksList = document.getElementById('sessionTasksList');
+  const sessionTasksCount = document.getElementById('sessionTasksCount');
+  const newSessionTaskInput = document.getElementById('newSessionTaskInput') as HTMLInputElement | null;
+  const sessionEmptyState = document.getElementById('sessionEmptyState');
+
+  function updateSessionTaskCount() {
+    if (!sessionTasksList || !sessionTasksCount) return;
+    const items = sessionTasksList.querySelectorAll('.focus-task-item');
+    sessionTasksCount.textContent = `${items.length} tasks`;
+    if (sessionEmptyState) {
+      sessionEmptyState.style.display = items.length === 0 ? 'block' : 'none';
+    }
+  }
+
+  function createSessionTaskElement(title: string) {
+    const item = document.createElement('div');
+    item.className = 'focus-task-item';
+    item.draggable = true;
+
+    item.innerHTML = `
+      <span class="focus-task-drag-handle" title="Drag to reorder">:::</span>
+      <label class="flow-checkbox-wrapper" style="margin-bottom: 0;">
+        <input type="checkbox" class="flow-checkbox-input" />
+        <span class="flow-checkbox-custom"></span>
+      </label>
+      <span class="focus-task-text">${title}</span>
+      <button type="button" class="btn-focus-task-delete" title="Delete task">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+    `;
+
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    checkbox?.addEventListener('change', (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target.checked) {
+        item.classList.add('completed');
+      } else {
+        item.classList.remove('completed');
+      }
+    });
+
+    const deleteBtn = item.querySelector('.btn-focus-task-delete');
+    deleteBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      item.style.opacity = '0';
+      item.style.transform = 'translateX(20px)';
+      item.style.transition = 'all 0.2s';
+      setTimeout(() => {
+        item.remove();
+        updateSessionTaskCount();
+      }, 200);
+    });
+
+    // Drag and Drop
+    item.addEventListener('dragstart', (e) => {
+      item.classList.add('is-dragging');
+      e.dataTransfer?.setData('text/plain', '');
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('is-dragging');
+      document.querySelectorAll('.focus-task-item').forEach(r => r.classList.remove('drag-over'));
+    });
+
+    item.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      item.classList.add('drag-over');
+    });
+
+    item.addEventListener('dragleave', () => {
+      item.classList.remove('drag-over');
+    });
+
+    item.addEventListener('drop', (e) => {
+      e.preventDefault();
+      item.classList.remove('drag-over');
+      const draggingItem = document.querySelector('.focus-task-item.is-dragging');
+      if (draggingItem && draggingItem !== item) {
+        sessionTasksList?.insertBefore(draggingItem, item);
+      }
+    });
+
+    return item;
+  }
+
+  newSessionTaskInput?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && newSessionTaskInput.value.trim() && sessionTasksList) {
+      e.preventDefault();
+      const taskEl = createSessionTaskElement(newSessionTaskInput.value.trim());
+      sessionTasksList.prepend(taskEl);
+      newSessionTaskInput.value = '';
+      updateSessionTaskCount();
+    }
+  });
+
+  // ==========================================================================
+  // 4. Full View (Distraction-Free Mode) Toggle
+  // ==========================================================================
+  const fullViewBtn = document.getElementById('fullViewToggleBtn');
+  const fullViewText = document.getElementById('fullViewBtnText');
+  const focusRoomContainer = document.getElementById('focusRoomContainer');
+
+  function toggleFullView() {
+    focusRoomContainer?.classList.toggle('fullscreen-active');
+    document.body.classList.toggle('flow-distraction-free');
+
+    const isFull = focusRoomContainer?.classList.contains('fullscreen-active');
+    if (fullViewText) {
+      fullViewText.textContent = isFull ? 'Exit Full' : 'Full View';
+    }
+
+    if (isFull) {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+    } else {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+  }
+
+  fullViewBtn?.addEventListener('click', toggleFullView);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && focusRoomContainer?.classList.contains('fullscreen-active')) {
+      toggleFullView();
+    }
+  });
+
+  updateDisplay();
+  updateSessionTaskCount();
+</script>

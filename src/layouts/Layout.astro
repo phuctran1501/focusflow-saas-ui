@@ -1,0 +1,47 @@
+---
+import Sidebar from '../components/Sidebar.astro';
+import Header from '../components/Header.astro';
+
+interface Props {
+  title: string;
+  activePage?: string;
+  pageCss?: string;
+}
+
+const { title, activePage = 'dashboard', pageCss } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - FocusFlow SaaS</title>
+  <meta name="description" content="FocusFlow - Modern productivity and focus-tracking SaaS dashboard. Plan your day, track deep work sessions, and conquer your goals." />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <!-- Core Design System -->
+  <link rel="stylesheet" href="/css/site.css" />
+  <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/components.css" />
+  {pageCss && <link rel="stylesheet" href={pageCss} />}
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Mobile Sidebar Backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Reusable Sidebar -->
+    <Sidebar activePage={activePage} />
+
+    <!-- Main Workspace -->
+    <div class="app-main">
+      <Header />
+
+      <main class="content-body" role="main">
+        <slot />
+      </main>
+    </div>
+  </div>
+</body>
+</html>

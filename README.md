@@ -1,11 +1,9 @@
 # <img src="wwwroot/images/logo.svg" width="36" height="36" valign="middle" alt="FocusFlow Logo" /> FocusFlow SaaS UI
 
-> A modern productivity and focus-tracking SaaS dashboard built with HTML5, CSS3, and ASP.NET Core MVC. UI-focused project featuring responsive layouts, analytics cards, deep work focus sessions, and task management with rich mock data.
+> A modern productivity and focus-tracking SaaS dashboard built with Astro, SCSS, and HTML5. UI-focused project featuring responsive layouts, analytics cards, deep work focus sessions with YouTube soundscapes, and clean task management.
 
 <p align="left">
-  <img src="https://img.shields.io/badge/.NET_10-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 10" />
-  <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=csharp&logoColor=white" alt="C#" />
-  <img src="https://img.shields.io/badge/ASP.NET_Core_MVC-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt="ASP.NET Core MVC" />
+  <img src="https://img.shields.io/badge/Astro-FF5D01?style=for-the-badge&logo=astro&logoColor=white" alt="Astro" />
   <img src="https://img.shields.io/badge/SCSS-CC6699?style=for-the-badge&logo=sass&logoColor=white" alt="SCSS" />
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5" />
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
@@ -140,32 +138,38 @@ focusflow-saas-ui/
 
 ### Prerequisites
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download) (or .NET 8 / 9 SDK compatible)
+- [Node.js](https://nodejs.org/) (v18+ or v22+)
+- npm or pnpm
 
 ### Steps to Run
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/<YOUR_USERNAME>/focusflow-saas-ui.git
+   git clone https://github.com/phuctran1501/focusflow-saas-ui.git
    cd focusflow-saas-ui
    ```
 
-2. Restore dependencies and build:
+2. Install dependencies:
 
    ```bash
-   dotnet build
+   npm install
    ```
 
 3. Run the development server:
 
    ```bash
-   dotnet run --launch-profile http
+   npm run dev
    ```
 
 4. Open your browser and navigate to:
    ```
-   http://localhost:5005
+   http://localhost:4321
+   ```
+
+5. Build production bundle (optional):
+   ```bash
+   npm run build
    ```
 
 ---

@@ -3,10 +3,22 @@
   "version": "1.0.0",
   "description": "FocusFlow SaaS UI - Productivity and Focus tracking dashboard",
   "scripts": {
+    "dev": "astro dev --port 4321",
+    "build": "astro build",
+    "preview": "astro preview",
     "scss": "sass wwwroot/scss:wwwroot/css --no-source-map --style=expanded",
     "scss:watch": "sass wwwroot/scss:wwwroot/css --watch --style=expanded"
   },
-  "keywords": ["aspnetcore", "scss", "sass", "saas-dashboard"],
+  "keywords": [
+    "aspnetcore",
+    "scss",
+    "sass",
+    "saas-dashboard"
+  ],
   "author": "FocusFlow",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "astro": "^7.3.8",
+    "sass": "^1.105.2"
+  }
 }

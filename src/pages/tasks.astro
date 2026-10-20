@@ -1,0 +1,466 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="My Tasks" activePage="tasks" pageCss="/css/pages/tasks.css">
+  <!-- Tasks Top Toolbar -->
+  <div class="tasks-toolbar">
+    <div class="tasks-toolbar-left">
+      <div class="tasks-search-box">
+        <svg class="tasks-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="taskSearchInput" class="tasks-search-input" placeholder="Search tasks..." />
+      </div>
+
+      <div class="pill-tab-group" id="taskFilterTabs">
+        <button type="button" class="pill-tab active" data-filter="all">
+          <span>All</span>
+          <span class="pill-tab-count" id="countAll">0</span>
+        </button>
+        <button type="button" class="pill-tab" data-filter="todo">
+          <span>To do</span>
+          <span class="pill-tab-count" id="countTodo">0</span>
+        </button>
+        <button type="button" class="pill-tab" data-filter="doing">
+          <span>Doing</span>
+          <span class="pill-tab-count" id="countDoing">0</span>
+        </button>
+        <button type="button" class="pill-tab" data-filter="completed">
+          <span>Completed</span>
+          <span class="pill-tab-count" id="countCompleted">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="tasks-toolbar-right">
+      <select class="tasks-filter-select" id="priorityFilterSelect">
+        <option value="all">Priority: All</option>
+        <option value="high">High Priority</option>
+        <option value="medium">Medium Priority</option>
+        <option value="low">Low Priority</option>
+      </select>
+
+      <button type="button" class="btn-flow btn-flow-primary" id="openCreateTaskModalBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>Create Task</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Task Metric Chips (Dynamic from user tasks) -->
+  <div class="task-metrics-strip">
+    <div class="metric-chip">
+      <div class="metric-chip-label">
+        <span style="color: #2563EB;">⚑</span>
+        <span>Low Priority</span>
+      </div>
+      <div class="metric-chip-value" id="metricLow">0</div>
+    </div>
+
+    <div class="metric-chip">
+      <div class="metric-chip-label">
+        <span style="color: #F59E0B;">⚑</span>
+        <span>Medium Priority</span>
+      </div>
+      <div class="metric-chip-value" id="metricMed">0</div>
+    </div>
+
+    <div class="metric-chip">
+      <div class="metric-chip-label">
+        <span style="color: #EF4444;">⚑</span>
+        <span>High Priority</span>
+      </div>
+      <div class="metric-chip-value" id="metricHigh">0</div>
+    </div>
+
+    <div class="metric-chip">
+      <div class="metric-chip-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#635BFF" stroke-width="2.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        </svg>
+        <span>Total Task</span>
+      </div>
+      <div class="metric-chip-value" id="metricTotal">0</div>
+    </div>
+
+    <div class="metric-chip">
+      <div class="metric-chip-label">
+        <span style="color: #10B981;">✓</span>
+        <span>Completed</span>
+      </div>
+      <div class="metric-chip-value" id="metricCompleted">0</div>
+    </div>
+  </div>
+
+  <!-- Tasks Table Card with Dropdown More Options -->
+  <div class="tasks-table-card">
+    <div class="tasks-table-responsive" style="min-height: 250px;">
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th style="width: 44px;">
+              <label class="flow-checkbox-wrapper" style="margin: 0;">
+                <input type="checkbox" id="selectAllCheckbox" class="flow-checkbox-input" />
+                <span class="flow-checkbox-custom"></span>
+              </label>
+            </th>
+            <th>Task Name</th>
+            <th>Assigned To</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th style="text-align: right; width: 60px;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tasksTableBody">
+          <!-- Populated dynamically from user-created tasks in localStorage -->
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div id="tasksEmptyState" style="text-align: center; padding: 48px 16px; color: var(--text-muted);">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin: 0 auto 16px; opacity: 0.4;">
+          <path d="M9 11L12 14L22 4"></path>
+          <path d="M21 12V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H16"></path>
+        </svg>
+        <div style="font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 6px;">No tasks created yet</div>
+        <p style="font-size: 0.85rem; max-width: 400px; margin: 0 auto 16px;">
+          Create your first task to start organizing your projects and tracking productivity.
+        </p>
+        <button type="button" class="btn-flow btn-flow-primary btn-flow-sm" id="btnEmptyCreateTask">
+          + Create First Task
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal-backdrop" id="createTaskModal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+    <div class="modal-window" style="background: #FFFFFF; border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #1E293B;">Create New Task</h3>
+        <button type="button" id="closeCreateTaskModalBtn" style="background: none; border: none; font-size: 1.25rem; color: #94A3B8; cursor: pointer;">&times;</button>
+      </div>
+
+      <form id="createTaskForm">
+        <div style="margin-bottom: 16px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Task Title</label>
+          <input type="text" id="modalTaskTitle" required placeholder="e.g. Design Homepage Wireframes" class="form-input" style="width: 100%;" />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Priority</label>
+            <select id="modalTaskPriority" class="form-input" style="width: 100%;">
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Status</label>
+            <select id="modalTaskStatus" class="form-input" style="width: 100%;">
+              <option value="To do">To do</option>
+              <option value="Doing">Doing</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 6px;">Due Date</label>
+          <input type="date" id="modalTaskDueDate" class="form-input" style="width: 100%;" />
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" id="cancelTaskModalBtn" class="btn-flow btn-flow-secondary">Cancel</button>
+          <button type="submit" class="btn-flow btn-flow-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  interface Task {
+    id: string;
+    title: string;
+    assignedTo: string;
+    priority: 'High' | 'Medium' | 'Low';
+    status: 'To do' | 'Doing' | 'Completed';
+    dueDate: string;
+  }
+
+  const STORAGE_KEY = 'focusflow_tasks_v1';
+
+  function getSavedTasks(): Task[] {
+    try {
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function saveTasks(tasks: Task[]) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    renderTasksTable();
+    updateMetrics();
+  }
+
+  const tableBody = document.getElementById('tasksTableBody');
+  const emptyState = document.getElementById('tasksEmptyState');
+  let currentFilter = 'all';
+  let currentPriority = 'all';
+  let currentSearch = '';
+
+  function renderTasksTable() {
+    if (!tableBody) return;
+    const allTasks = getSavedTasks();
+
+    let filtered = allTasks.filter(t => {
+      const matchSearch = t.title.toLowerCase().includes(currentSearch.toLowerCase());
+      const matchPriority = currentPriority === 'all' || t.priority.toLowerCase() === currentPriority.toLowerCase();
+      let matchStatus = true;
+      if (currentFilter === 'todo') matchStatus = t.status === 'To do';
+      else if (currentFilter === 'doing') matchStatus = t.status === 'Doing';
+      else if (currentFilter === 'completed') matchStatus = t.status === 'Completed';
+
+      return matchSearch && matchPriority && matchStatus;
+    });
+
+    tableBody.innerHTML = '';
+
+    if (filtered.length === 0) {
+      if (emptyState) emptyState.style.display = 'block';
+      return;
+    }
+
+    if (emptyState) emptyState.style.display = 'none';
+
+    filtered.forEach(task => {
+      const tr = document.createElement('tr');
+      tr.setAttribute('data-id', task.id);
+
+      const priorityBadgeClass = task.priority === 'High' ? 'badge-priority-high' : task.priority === 'Medium' ? 'badge-priority-med' : 'badge-priority-low';
+      const statusBadgeClass = task.status === 'Completed' ? 'badge-status-completed' : task.status === 'Doing' ? 'badge-status-doing' : 'badge-status-todo';
+
+      tr.innerHTML = `
+        <td>
+          <label class="flow-checkbox-wrapper" style="margin: 0;">
+            <input type="checkbox" class="flow-checkbox-input task-row-check" ${task.status === 'Completed' ? 'checked' : ''} />
+            <span class="flow-checkbox-custom"></span>
+          </label>
+        </td>
+        <td>
+          <span class="task-title-cell ${task.status === 'Completed' ? 'line-through' : ''}">${task.title}</span>
+        </td>
+        <td>
+          <div class="assigned-user-pill">
+            <span class="user-avatar-xs" style="background: linear-gradient(135deg, #635BFF 0%, #FF6B00 100%); color: #fff; font-size: 0.7rem; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 6px;">PT</span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: #1E293B;">Phúc Trần</span>
+          </div>
+        </td>
+        <td>
+          <span class="flow-badge ${priorityBadgeClass}">⚑ ${task.priority}</span>
+        </td>
+        <td>
+          <span class="flow-badge ${statusBadgeClass}">● ${task.status}</span>
+        </td>
+        <td style="color: #64748B; font-size: 0.85rem;">
+          ${task.dueDate || 'No due date'}
+        </td>
+        <td style="text-align: right; position: relative;">
+          <div class="table-dropdown-wrapper">
+            <button type="button" class="btn-table-more" title="More options">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="5" r="2"></circle>
+                <circle cx="12" cy="12" r="2"></circle>
+                <circle cx="12" cy="19" r="2"></circle>
+              </svg>
+            </button>
+            <div class="table-dropdown-menu">
+              <button type="button" class="dropdown-menu-item btn-action-edit">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                <span>Edit</span>
+              </button>
+              <button type="button" class="dropdown-menu-item danger btn-action-delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </td>
+      `;
+
+      // Status check
+      const check = tr.querySelector('.task-row-check');
+      check?.addEventListener('change', (e) => {
+        const isChecked = (e.target as HTMLInputElement).checked;
+        const tasks = getSavedTasks();
+        const found = tasks.find(t => t.id === task.id);
+        if (found) {
+          found.status = isChecked ? 'Completed' : 'To do';
+          saveTasks(tasks);
+        }
+      });
+
+      // Dropdown toggle
+      const moreBtn = tr.querySelector('.btn-table-more');
+      const menu = tr.querySelector('.table-dropdown-menu');
+      moreBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        document.querySelectorAll('.table-dropdown-menu').forEach(m => {
+          if (m !== menu) m.classList.remove('open');
+        });
+        menu?.classList.toggle('open');
+      });
+
+      // Delete action
+      const deleteBtn = tr.querySelector('.btn-action-delete');
+      deleteBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const tasks = getSavedTasks().filter(t => t.id !== task.id);
+        saveTasks(tasks);
+      });
+
+      // Edit action
+      const editBtn = tr.querySelector('.btn-action-edit');
+      editBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newTitle = prompt('Edit task title:', task.title);
+        if (newTitle && newTitle.trim()) {
+          const tasks = getSavedTasks();
+          const found = tasks.find(t => t.id === task.id);
+          if (found) {
+            found.title = newTitle.trim();
+            saveTasks(tasks);
+          }
+        }
+      });
+
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function updateMetrics() {
+    const tasks = getSavedTasks();
+    const low = tasks.filter(t => t.priority === 'Low').length;
+    const med = tasks.filter(t => t.priority === 'Medium').length;
+    const high = tasks.filter(t => t.priority === 'High').length;
+    const completed = tasks.filter(t => t.status === 'Completed').length;
+    const todo = tasks.filter(t => t.status === 'To do').length;
+    const doing = tasks.filter(t => t.status === 'Doing').length;
+
+    const elLow = document.getElementById('metricLow');
+    const elMed = document.getElementById('metricMed');
+    const elHigh = document.getElementById('metricHigh');
+    const elTotal = document.getElementById('metricTotal');
+    const elCompleted = document.getElementById('metricCompleted');
+
+    if (elLow) elLow.textContent = `${low}`;
+    if (elMed) elMed.textContent = `${med}`;
+    if (elHigh) elHigh.textContent = `${high}`;
+    if (elTotal) elTotal.textContent = `${tasks.length}`;
+    if (elCompleted) elCompleted.textContent = `${completed}`;
+
+    const countAll = document.getElementById('countAll');
+    const countTodo = document.getElementById('countTodo');
+    const countDoing = document.getElementById('countDoing');
+    const countCompleted = document.getElementById('countCompleted');
+
+    if (countAll) countAll.textContent = `${tasks.length}`;
+    if (countTodo) countTodo.textContent = `${todo}`;
+    if (countDoing) countDoing.textContent = `${doing}`;
+    if (countCompleted) countCompleted.textContent = `${completed}`;
+  }
+
+  // Close menus on outside click
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.table-dropdown-menu').forEach(m => m.classList.remove('open'));
+  });
+
+  // Modal handlers
+  const modal = document.getElementById('createTaskModal');
+  const openBtn = document.getElementById('openCreateTaskModalBtn');
+  const emptyCreateBtn = document.getElementById('btnEmptyCreateTask');
+  const closeBtn = document.getElementById('closeCreateTaskModalBtn');
+  const cancelBtn = document.getElementById('cancelTaskModalBtn');
+  const form = document.getElementById('createTaskForm') as HTMLFormElement | null;
+
+  function openModal() {
+    if (modal) modal.style.display = 'flex';
+  }
+
+  function closeModal() {
+    if (modal) modal.style.display = 'none';
+  }
+
+  openBtn?.addEventListener('click', openModal);
+  emptyCreateBtn?.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const titleInput = document.getElementById('modalTaskTitle') as HTMLInputElement | null;
+    const prioritySelect = document.getElementById('modalTaskPriority') as HTMLSelectElement | null;
+    const statusSelect = document.getElementById('modalTaskStatus') as HTMLSelectElement | null;
+    const dateInput = document.getElementById('modalTaskDueDate') as HTMLInputElement | null;
+
+    if (!titleInput || !titleInput.value.trim()) return;
+
+    const newTask: Task = {
+      id: 'task_' + Date.now(),
+      title: titleInput.value.trim(),
+      assignedTo: 'Phúc Trần',
+      priority: (prioritySelect?.value as any) || 'Medium',
+      status: (statusSelect?.value as any) || 'To do',
+      dueDate: dateInput?.value || new Date().toISOString().split('T')[0]
+    };
+
+    const tasks = getSavedTasks();
+    tasks.unshift(newTask);
+    saveTasks(tasks);
+
+    titleInput.value = '';
+    closeModal();
+  });
+
+  // Search and filter tab listeners
+  const searchInput = document.getElementById('taskSearchInput') as HTMLInputElement | null;
+  searchInput?.addEventListener('input', (e) => {
+    currentSearch = (e.target as HTMLInputElement).value;
+    renderTasksTable();
+  });
+
+  const prioritySelect = document.getElementById('priorityFilterSelect') as HTMLSelectElement | null;
+  prioritySelect?.addEventListener('change', (e) => {
+    currentPriority = (e.target as HTMLSelectElement).value;
+    renderTasksTable();
+  });
+
+  document.querySelectorAll('#taskFilterTabs .pill-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#taskFilterTabs .pill-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFilter = tab.getAttribute('data-filter') || 'all';
+      renderTasksTable();
+    });
+  });
+
+  // Initial load
+  renderTasksTable();
+  updateMetrics();
+</script>

@@ -9,3 +9,8 @@ obj/
 *.suo
 *.userprefs
 appsettings.Development.json
+
+## Node & Astro
+node_modules/
+dist/
+.astro/

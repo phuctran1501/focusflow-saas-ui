@@ -1,0 +1,276 @@
+/* ==========================================================================
+   FocusFlow - Tasks Page (Clean SaaS Table Layout matching Screenshot 3)
+   ========================================================================== */
+
+/* Top Tasks Toolbar */
+.tasks-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tasks-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.tasks-search-box {
+  position: relative;
+  width: 220px;
+}
+
+.tasks-search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 14px 0 34px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.86rem;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+}
+
+.tasks-search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.tasks-search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  stroke: var(--text-light);
+  pointer-events: none;
+}
+
+.tasks-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tasks-filter-select {
+  height: 38px;
+  padding: 0 30px 0 12px;
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--text-main);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23697386' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.tasks-filter-select:hover {
+  border-color: #CBD5E1;
+}
+
+/* Metric Summary Chips Row */
+.task-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric-chip {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.metric-chip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.metric-chip-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.metric-chip-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-main);
+}
+
+/* Tasks Table Container */
+.tasks-table-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.tasks-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.tasks-table thead {
+  background: #FAFAFC;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tasks-table th {
+  padding: 14px 18px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.tasks-table tbody tr {
+  border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast);
+}
+
+.tasks-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.tasks-table tbody tr.completed-row {
+  background-color: #FAFCF9;
+}
+
+.tasks-table tbody tr.completed-row .task-title-cell {
+  text-decoration: line-through;
+  color: var(--text-light);
+}
+
+.tasks-table td {
+  padding: 14px 18px;
+  vertical-align: middle;
+  color: var(--text-main);
+  white-space: nowrap;
+}
+
+/* Table Specific Cell Styles */
+.task-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-subtasks-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-light);
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.assignee-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.assignee-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #635BFF;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.assignee-name {
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.assignee-team-pill {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  background: var(--bg-subtle);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+.action-menu-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  transition: all var(--transition-fast);
+}
+
+.action-menu-btn:hover {
+  background: var(--bg-subtle);
+  color: var(--text-main);
+}
+
+/* Responsive Table */
+@media (max-width: 1200px) {
+  .task-metrics-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .task-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tasks-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tasks-toolbar-left {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tasks-search-box {
+    width: 100%;
+  }
+}

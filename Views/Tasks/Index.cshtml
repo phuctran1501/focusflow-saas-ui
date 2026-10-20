@@ -1,0 +1,494 @@
+@model FocusFlow.ViewModels.TasksViewModel
+@{
+    ViewData["Title"] = "My Tasks";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/tasks.css" asp-append-version="true" />
+}
+
+<!-- Tasks Top Toolbar -->
+<div class="tasks-toolbar">
+    <div class="tasks-toolbar-left">
+        <div class="tasks-search-box">
+            <svg class="tasks-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="taskSearchInput" class="tasks-search-input" placeholder="Search tasks..." />
+        </div>
+
+        <div class="pill-tab-group" id="taskFilterTabs">
+            <button type="button" class="pill-tab active" data-filter="all">
+                <span>All</span>
+                <span class="pill-tab-count">@Model.Tasks.Count</span>
+            </button>
+            <button type="button" class="pill-tab" data-filter="todo">
+                <span>To do</span>
+                <span class="pill-tab-count">3</span>
+            </button>
+            <button type="button" class="pill-tab" data-filter="doing">
+                <span>Doing</span>
+                <span class="pill-tab-count">4</span>
+            </button>
+            <button type="button" class="pill-tab" data-filter="overdue">
+                <span>Overdue</span>
+                <span class="pill-tab-count">3</span>
+            </button>
+            <button type="button" class="pill-tab" data-filter="completed">
+                <span>Completed</span>
+                <span class="pill-tab-count">2</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="tasks-toolbar-right">
+        <select class="tasks-filter-select" id="priorityFilterSelect">
+            <option value="all">Priority: All</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+        </select>
+
+        <button type="button" class="btn-flow btn-flow-primary" id="openCreateTaskModalBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Create Task</span>
+        </button>
+    </div>
+</div>
+
+<!-- Task Metric Chips (Matching Screenshot 3) -->
+<div class="task-metrics-strip">
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <span style="color: #2563EB;">⚑</span>
+            <span>Low Priority</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.LowPriorityCount</div>
+    </div>
+
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <span style="color: #F59E0B;">⚑</span>
+            <span>Medium Priority</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.MedPriorityCount</div>
+    </div>
+
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <span style="color: #EF4444;">⚑</span>
+            <span>High Priority</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.HighPriorityCount</div>
+    </div>
+
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#635BFF" stroke-width="2.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            </svg>
+            <span>Total Task</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.TotalTaskCount</div>
+    </div>
+
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Total Task Done</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.TotalTaskDoneCount</div>
+    </div>
+
+    <div class="metric-chip">
+        <div class="metric-chip-label">
+            <span style="color: #EF4444;">⚠</span>
+            <span>Overdue</span>
+        </div>
+        <div class="metric-chip-value">@Model.Metrics.OverdueCount</div>
+    </div>
+</div>
+
+<!-- SaaS Tasks Table -->
+<div class="tasks-table-card">
+    <div class="tasks-table-responsive">
+        <table class="tasks-table" id="mainTasksTable">
+            <thead>
+                <tr>
+                    <th style="width: 40px;">
+                        <label class="flow-checkbox-wrapper">
+                            <input type="checkbox" class="flow-checkbox-input" id="checkAllTasks" />
+                            <span class="flow-checkbox-mark"></span>
+                        </label>
+                    </th>
+                    <th>Task Name</th>
+                    <th>Assigned to</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th style="width: 48px; text-align: center;"></th>
+                </tr>
+            </thead>
+            <tbody id="tasksTableBody">
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr class="task-row @(task.IsCompleted ? "completed-row" : "")" 
+                        data-status="@task.Status.ToLower()" 
+                        data-priority="@task.Priority.ToLower()" 
+                        data-title="@task.Title.ToLower()" 
+                        data-assignee="@task.AssignedName.ToLower()">
+                        <td>
+                            <label class="flow-checkbox-wrapper">
+                                <input type="checkbox" class="flow-checkbox-input task-row-check" @(task.IsCompleted ? "checked" : "") />
+                                <span class="flow-checkbox-mark"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="task-title-wrapper">
+                                <span class="task-title-cell">@task.Title</span>
+                                <span class="task-subtasks-badge" title="Subtasks">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                    </svg>
+                                    @task.SubtasksCount
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="assignee-cell">
+                                <div class="assignee-avatar" style="background: @(task.AssignedAvatar == "RK" ? "#3B82F6" : task.AssignedAvatar == "SB" ? "#8B5CF6" : task.AssignedAvatar == "TH" ? "#10B981" : "#F59E0B");">
+                                    @task.AssignedAvatar
+                                </div>
+                                <span class="assignee-name">@task.AssignedName</span>
+                                <span class="assignee-team-pill">+1</span>
+                            </div>
+                        </td>
+                        <td>
+                            @if (task.Priority == "High")
+                            {
+                                <span class="flow-badge badge-priority-high">
+                                    <span style="color: #E03137;">⚑</span> High
+                                </span>
+                            }
+                            else if (task.Priority == "Medium")
+                            {
+                                <span class="flow-badge badge-priority-med">
+                                    <span style="color: #B35C00;">⚑</span> Medium
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="flow-badge badge-priority-low">
+                                    <span style="color: #2563EB;">⚑</span> Low
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            @if (task.Status == "Overdue")
+                            {
+                                <span class="flow-badge badge-status-overdue">
+                                    <span class="badge-dot"></span> Overdue
+                                </span>
+                            }
+                            else if (task.Status == "Doing")
+                            {
+                                <span class="flow-badge badge-status-doing">
+                                    <span class="badge-dot"></span> Doing
+                                </span>
+                            }
+                            else if (task.Status == "Completed")
+                            {
+                                <span class="flow-badge badge-status-completed">
+                                    <span class="badge-dot"></span> Completed
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="flow-badge badge-status-todo">
+                                    <span class="badge-dot"></span> To do
+                                </span>
+                            }
+                        </td>
+                        <td style="color: var(--text-muted); font-size: 0.85rem;">@task.DueDate</td>
+                        <td style="text-align: center;">
+                            <button type="button" class="action-menu-btn" title="More options">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="19" cy="12" r="1"></circle>
+                                    <circle cx="5" cy="12" r="1"></circle>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Create Task Modal -->
+<div class="flow-modal-backdrop" id="createTaskModal">
+    <div class="flow-modal">
+        <div class="flow-modal-header">
+            <h3 class="flow-modal-title">Create New Task</h3>
+            <button type="button" class="btn-flow-ghost btn-flow-icon" id="closeCreateTaskModalBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <form id="createTaskForm">
+            <div class="flow-modal-body">
+                <div class="flow-input-group">
+                    <label class="flow-label">Task Title</label>
+                    <input type="text" id="newTaskTitle" class="flow-input" placeholder="e.g. Design System Polish & Testing" required />
+                </div>
+
+                <div class="flow-input-group">
+                    <label class="flow-label">Assignee</label>
+                    <select id="newTaskAssignee" class="flow-select">
+                        <option value="Alex Morgan|AM|#635BFF">Alex Morgan (You)</option>
+                        <option value="Sophia Bennett|SB|#8B5CF6">Sophia Bennett</option>
+                        <option value="Rizky Kurniawan|RK|#3B82F6">Rizky Kurniawan</option>
+                        <option value="Amanda Nur|AN|#10B981">Amanda Nur</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+                    <div class="flow-input-group">
+                        <label class="flow-label">Priority</label>
+                        <select id="newTaskPriority" class="flow-select">
+                            <option value="High">High</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+
+                    <div class="flow-input-group">
+                        <label class="flow-label">Status</label>
+                        <select id="newTaskStatus" class="flow-select">
+                            <option value="Todo" selected>To do</option>
+                            <option value="Doing">Doing</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flow-input-group">
+                    <label class="flow-label">Due Date</label>
+                    <input type="text" id="newTaskDueDate" class="flow-input" value="Tomorrow, 5:00 PM" />
+                </div>
+            </div>
+
+            <div class="flow-modal-footer">
+                <button type="button" class="btn-flow btn-flow-secondary" id="cancelCreateTaskBtn">Cancel</button>
+                <button type="submit" class="btn-flow btn-flow-primary">Add Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Modal Controls
+        const modal = document.getElementById('createTaskModal');
+        const openBtn = document.getElementById('openCreateTaskModalBtn');
+        const closeBtn = document.getElementById('closeCreateTaskModalBtn');
+        const cancelBtn = document.getElementById('cancelCreateTaskBtn');
+
+        function openModal() {
+            modal.classList.add('modal-open');
+            document.getElementById('newTaskTitle').focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('modal-open');
+        }
+
+        openBtn.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Filter & Search Logic
+        const searchInput = document.getElementById('taskSearchInput');
+        const priorityFilter = document.getElementById('priorityFilterSelect');
+        const tableBody = document.getElementById('tasksTableBody');
+        let currentFilterTab = 'all';
+
+        function filterRows() {
+            const query = searchInput.value.toLowerCase().trim();
+            const priority = priorityFilter.value.toLowerCase();
+            const rows = document.querySelectorAll('.task-row');
+
+            rows.forEach(row => {
+                const title = row.dataset.title;
+                const assignee = row.dataset.assignee;
+                const status = row.dataset.status;
+                const rowPriority = row.dataset.priority;
+
+                const matchesQuery = !query || title.includes(query) || assignee.includes(query);
+                const matchesPriority = priority === 'all' || rowPriority === priority;
+                let matchesTab = true;
+
+                if (currentFilterTab === 'todo') matchesTab = (status === 'todo');
+                else if (currentFilterTab === 'doing') matchesTab = (status === 'doing');
+                else if (currentFilterTab === 'overdue') matchesTab = (status === 'overdue');
+                else if (currentFilterTab === 'completed') matchesTab = (status === 'completed');
+
+                if (matchesQuery && matchesPriority && matchesTab) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterRows);
+        priorityFilter.addEventListener('change', filterRows);
+
+        document.querySelectorAll('#taskFilterTabs .pill-tab').forEach(tab => {
+            tab.addEventListener('click', function () {
+                document.querySelectorAll('#taskFilterTabs .pill-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentFilterTab = this.dataset.filter;
+                filterRows();
+            });
+        });
+
+        // Checkbox row toggling
+        function bindRowChecks() {
+            document.querySelectorAll('.task-row-check').forEach(chk => {
+                chk.addEventListener('change', function () {
+                    const row = this.closest('.task-row');
+                    if (row) {
+                        if (this.checked) {
+                            row.classList.add('completed-row');
+                            row.dataset.status = 'completed';
+                        } else {
+                            row.classList.remove('completed-row');
+                            row.dataset.status = 'todo';
+                        }
+                    }
+                });
+            });
+        }
+
+        bindRowChecks();
+
+        // Check All header checkbox
+        const checkAll = document.getElementById('checkAllTasks');
+        if (checkAll) {
+            checkAll.addEventListener('change', function () {
+                document.querySelectorAll('.task-row-check').forEach(chk => {
+                    chk.checked = checkAll.checked;
+                    const row = chk.closest('.task-row');
+                    if (row) {
+                        if (checkAll.checked) {
+                            row.classList.add('completed-row');
+                            row.dataset.status = 'completed';
+                        } else {
+                            row.classList.remove('completed-row');
+                            row.dataset.status = 'todo';
+                        }
+                    }
+                });
+            });
+        }
+
+        // Form Submission - Create Task dynamically
+        const form = document.getElementById('createTaskForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = document.getElementById('newTaskTitle').value;
+            const assigneeRaw = document.getElementById('newTaskAssignee').value.split('|');
+            const assigneeName = assigneeRaw[0];
+            const assigneeAvatar = assigneeRaw[1];
+            const assigneeColor = assigneeRaw[2];
+            const priority = document.getElementById('newTaskPriority').value;
+            const status = document.getElementById('newTaskStatus').value;
+            const dueDate = document.getElementById('newTaskDueDate').value;
+
+            let priorityBadge = '';
+            if (priority === 'High') priorityBadge = `<span class="flow-badge badge-priority-high"><span style="color: #E03137;">⚑</span> High</span>`;
+            else if (priority === 'Medium') priorityBadge = `<span class="flow-badge badge-priority-med"><span style="color: #B35C00;">⚑</span> Medium</span>`;
+            else priorityBadge = `<span class="flow-badge badge-priority-low"><span style="color: #2563EB;">⚑</span> Low</span>`;
+
+            let statusBadge = '';
+            if (status === 'Completed') statusBadge = `<span class="flow-badge badge-status-completed"><span class="badge-dot"></span> Completed</span>`;
+            else if (status === 'Doing') statusBadge = `<span class="flow-badge badge-status-doing"><span class="badge-dot"></span> Doing</span>`;
+            else statusBadge = `<span class="flow-badge badge-status-todo"><span class="badge-dot"></span> To do</span>`;
+
+            const tr = document.createElement('tr');
+            tr.className = `task-row ${status === 'Completed' ? 'completed-row' : ''}`;
+            tr.dataset.status = status.toLowerCase();
+            tr.dataset.priority = priority.toLowerCase();
+            tr.dataset.title = title.toLowerCase();
+            tr.dataset.assignee = assigneeName.toLowerCase();
+
+            tr.innerHTML = `
+                <td>
+                    <label class="flow-checkbox-wrapper">
+                        <input type="checkbox" class="flow-checkbox-input task-row-check" ${status === 'Completed' ? 'checked' : ''} />
+                        <span class="flow-checkbox-mark"></span>
+                    </label>
+                </td>
+                <td>
+                    <div class="task-title-wrapper">
+                        <span class="task-title-cell">${title}</span>
+                        <span class="task-subtasks-badge">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                            1
+                        </span>
+                    </div>
+                </td>
+                <td>
+                    <div class="assignee-cell">
+                        <div class="assignee-avatar" style="background: ${assigneeColor};">
+                            ${assigneeAvatar}
+                        </div>
+                        <span class="assignee-name">${assigneeName}</span>
+                    </div>
+                </td>
+                <td>${priorityBadge}</td>
+                <td>${statusBadge}</td>
+                <td style="color: var(--text-muted); font-size: 0.85rem;">${dueDate}</td>
+                <td style="text-align: center;">
+                    <button type="button" class="action-menu-btn" title="More options">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="19" cy="12" r="1"></circle>
+                            <circle cx="5" cy="12" r="1"></circle>
+                        </svg>
+                    </button>
+                </td>
+            `;
+
+            tableBody.prepend(tr);
+            bindRowChecks();
+            closeModal();
+            form.reset();
+            filterRows();
+        });
+    </script>
+}

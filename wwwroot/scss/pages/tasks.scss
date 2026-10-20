@@ -234,6 +234,11 @@
   }
 }
 
+.table-dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 .action-menu-btn {
   width: 32px;
   height: 32px;
@@ -242,9 +247,64 @@
   color: $text-light;
   transition: all $transition-fast;
 
-  &:hover {
+  &:hover, &.active {
     background: $bg-subtle;
     color: $text-main;
+  }
+}
+
+.table-dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  background: #fff;
+  border: 1px solid $border-light;
+  border-radius: $radius-md;
+  box-shadow: $shadow-md;
+  min-width: 160px;
+  padding: 6px;
+  z-index: 100;
+  animation: fadeIn 0.15s ease-out;
+
+  &.show {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .table-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: $radius-sm;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: $text-main;
+    text-align: left;
+    width: 100%;
+    transition: background $transition-fast, color $transition-fast;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+
+    &:hover {
+      background: $bg-subtle;
+      color: $primary;
+    }
+
+    &.text-danger {
+      color: $danger;
+
+      &:hover {
+        background: $danger-bg;
+        color: $danger;
+      }
+    }
   }
 }
 

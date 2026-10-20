@@ -1,16 +1,25 @@
-## .NET Core
-bin/
-obj/
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production build output
+dist/
+
+# Astro cache & temporary files
+.astro/
+
+# Environment variables & local configs
+.env
+.env.production
+.env.local
+
+# Editor directories
+.vscode/
+.vs/
+.idea/
+*.suo
 *.user
 *.userosscache
 *.sln.docstates
-.vscode/
-.vs/
-*.suo
-*.userprefs
-appsettings.Development.json
-
-## Node & Astro
-node_modules/
-dist/
-.astro/
+*.log

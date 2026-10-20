@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="flowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#635BFF"/>
+      <stop offset="100%" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#635BFF" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="100" height="100" rx="26" fill="url(#flowGrad)" filter="url(#subtleShadow)"/>
+  <g fill="#FFFFFF">
+    <circle cx="34" cy="34" r="9"/>
+    <circle cx="66" cy="34" r="9" opacity="0.85"/>
+    <circle cx="34" cy="66" r="9" opacity="0.85"/>
+    <circle cx="66" cy="66" r="9"/>
+    <path d="M34 43v14 M43 34h14 M66 43v14 M43 66h14" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>

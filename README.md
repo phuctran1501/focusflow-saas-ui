@@ -1,11 +1,13 @@
-# FocusFlow SaaS UI ⚡
+# <img src="wwwroot/images/logo.svg" width="36" height="36" valign="middle" alt="FocusFlow Logo" /> FocusFlow SaaS UI
 
 > A modern productivity and focus-tracking SaaS dashboard built with HTML5, CSS3, and ASP.NET Core MVC. UI-focused project featuring responsive layouts, analytics cards, deep work focus sessions, and task management with rich mock data.
 
-[![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-10.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
-[![C#](https://img.shields.io/badge/C%23-13.0-239120?logo=csharp&logoColor=white)](https://docs.microsoft.com/dotnet/csharp/)
-[![CSS3](https://img.shields.io/badge/CSS3-Pure%20Vanilla-1572B6?logo=css3&logoColor=white)](https://www.w3.org/Style/CSS/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<p align="left">
+  <a href="https://dotnet.microsoft.com/"><img src="https://img.shields.io/badge/ASP.NET%20Core-10.0-512BD4?logo=dotnet&logoColor=white" alt="ASP.NET Core" /></a>
+  <a href="https://docs.microsoft.com/dotnet/csharp/"><img src="https://img.shields.io/badge/C%23-13.0-239120?logo=csharp&logoColor=white" alt="C#" /></a>
+  <a href="https://www.w3.org/Style/CSS/"><img src="https://img.shields.io/badge/CSS3-Pure%20Vanilla-1572B6?logo=css3&logoColor=white" alt="CSS3" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License" /></a>
+</p>
 
 ---
 

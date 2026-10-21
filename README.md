@@ -71,7 +71,6 @@ The UI utilizes a tailored SaaS design token system defined in CSS variables (`w
 
 - **HTML5 & Razor Views**: Semantic markup and layout templating (`_Layout.cshtml`, `_Sidebar.cshtml`).
 - **CSS3 (Pure Vanilla)**: Custom Flexbox, CSS Grid, CSS Variables, SVG curves, keyframe animations, and custom scrollbars (no Tailwind dependency).
-- **C# / ASP.NET Core MVC**: Clean Controller-ViewModel architecture rendering mock data models.
 - **JavaScript (Vanilla)**: Non-intrusive interactive widgets:
   - Circular timer countdown with SVG stroke-dashoffset animation.
   - Native Web Audio API pink/brown noise rain synthesizer for focus soundscapes.
